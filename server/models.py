@@ -26,8 +26,13 @@ class Game(db.Model, SerializerMixin):
 
     
     #Validations
+    @validates("title")
+    def validates_title(self, key, title):
+        if not title:
+            raise ValueError("Game must have a title.")
+        return title
 
-    #repr
+
     def __repr__(self):
         return f'<Game {self.id}: {self.title}>'
 
@@ -51,11 +56,24 @@ class Store(db.Model, SerializerMixin):
 
     
     #Validations
-
-
-    #repr
+    @validates("name")
+    def validates_name(self, key, name):
+        if not name:
+            raise ValueError("Store must have a name.")
+        return name
+    
+    
+    @validates("hours")
+    def validates_hours(self, key, hours):
+        if 0 <= hours <= 23:
+            return hours
+        else:
+            raise ValueError('Hours must be between 0 and 23')
+        
     def __repr__(self):
         return f'<Store {self.id}: {self.name}>'
+
+
 
 class Listing(db.Model, SerializerMixin):
     __tablename__ = "listings"
@@ -78,7 +96,6 @@ class Listing(db.Model, SerializerMixin):
 
     
     #Validations
-
 
     #repr
     def __repr__(self):
