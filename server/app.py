@@ -9,6 +9,7 @@ from flask_restful import Resource
 
 # Local imports
 from config import app, db, api
+
 # Add your model imports
 from models import Game, Store, Listing
 
@@ -28,7 +29,16 @@ class Games(Resource):
         return make_response(games, 200)
 
     def post(self):
-        pass
+        json = request.get_json()
+        new_game = Game(
+            title = json['title'],
+            rating = json['rating'],
+            console = json['console'],
+            image = json['image']
+        )
+        db.session.add(new_game)
+        db.session.commit()
+        return make_response(new_game.to_dict(), 201)
 
     def patch(self, id):
         pass
