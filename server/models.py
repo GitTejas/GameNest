@@ -32,7 +32,6 @@ class Game(db.Model, SerializerMixin):
         if not title:
             raise ValueError("Game must have a title.")
         return title
-    #key is positional, we only used it for when doing multiple things
 
     @validates("rating")
     def validates_rating(self, key, rating):
@@ -53,7 +52,6 @@ class Game(db.Model, SerializerMixin):
 
     def __repr__(self):
         return f'<Game {self.id}: {self.title}>'
-
 
 
 class Store(db.Model, SerializerMixin):

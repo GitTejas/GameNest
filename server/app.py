@@ -28,17 +28,17 @@ class Games(Resource):
 
         return make_response(games, 200)
 
-    def post(self):
-        json = request.get_json()
-        new_game = Game(
-            title = json['title'],
-            rating = json['rating'],
-            console = json['console'],
-            image = json['image']
-        )
-        db.session.add(new_game)
-        db.session.commit()
-        return make_response(new_game.to_dict(), 201)
+    # def post(self):
+    #     json = request.get_json()
+    #     new_game = Game(
+    #         title = json['title'],
+    #         rating = json['rating'],
+    #         console = json['console'],
+    #         image = json['image']
+    #     )
+    #     db.session.add(new_game)
+    #     db.session.commit()
+    #     return make_response(new_game.to_dict(), 201)
 
     def patch(self, id):
         pass
