@@ -80,6 +80,12 @@ class Store(db.Model, SerializerMixin):
             raise ValueError("Store must have a name.")
         return name
 
+
+    @validates("location")
+    def validates_location(self, key, location):
+        pass
+
+
     @validates("hours")
     def validates_hours(self, key, hours):
         if 0 <= hours <= 23:
@@ -87,10 +93,6 @@ class Store(db.Model, SerializerMixin):
         else:
             raise ValueError('Hours must be between 0 and 23')
         
-    @validates("location")
-    def validates_location(self, key, location):
-        pass
-
         
     def __repr__(self):
         return f'<Store {self.id}: {self.name}>'
@@ -118,14 +120,6 @@ class Listing(db.Model, SerializerMixin):
 
     
     #Validations
-    @validates("game_id", "store_id")
-    def validates_foriegn_key(self, key, id):
-        if key == "game_id" and isinstance(id, int):
-            return id
-        if key == "store_id" and isinstance(id, int):
-            return id
-        raise ValueError('Id must be an integer')
-    
     
     @validates("price")
     def validates_price(self, key, price):
@@ -138,6 +132,14 @@ class Listing(db.Model, SerializerMixin):
     @validates("condition")
     def validates_condition(self, key, condition):
         pass
+
+    @validates("game_id", "store_id")
+    def validates_foriegn_key(self, key, id):
+        if key == "game_id" and isinstance(id, int):
+            return id
+        if key == "store_id" and isinstance(id, int):
+            return id
+        raise ValueError('Id must be an integer')
         
 
     def __repr__(self):
