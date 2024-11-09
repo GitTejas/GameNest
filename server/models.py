@@ -14,8 +14,8 @@ class Game(db.Model, SerializerMixin):
     rating = db.Column(db.String)
 
     console = db.Column(db.String)
-    image = db.Column(db.String)
     genre = db.Column(db.String)
+    image = db.Column(db.String)
 
     #Add relationship
     listings = db.relationship("Listing", back_populates="game", cascade="all, delete-orphan")
@@ -41,14 +41,14 @@ class Game(db.Model, SerializerMixin):
     def validates_console(self, key, console):
         pass
 
-    @validates("image")
-    def validates_image(self, key, image):
-        pass
 
     @validates("genre")
     def validates_genre(self, key, genre):
         pass
 
+    @validates("image")
+    def validates_image(self, key, image):
+        pass
 
     def __repr__(self):
         return f'<Game {self.id}: {self.title}>'
