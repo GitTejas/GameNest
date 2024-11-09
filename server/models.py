@@ -10,7 +10,7 @@ class Game(db.Model, SerializerMixin):
     __tablename__ = "games"
 
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String, nullable=False)
+    title = db.Column(db.String, nullable=False, unique=True)
     rating = db.Column(db.String)
 
     console = db.Column(db.String)
@@ -26,11 +26,29 @@ class Game(db.Model, SerializerMixin):
 
     
     #Validations
+
     @validates("title")
     def validates_title(self, key, title):
         if not title:
             raise ValueError("Game must have a title.")
         return title
+    #key is positional, we only used it for when doing multiple things
+
+    @validates("rating")
+    def validates_rating(self, key, rating):
+        pass
+
+    @validates("console")
+    def validates_console(self, key, console):
+        pass
+
+    @validates("image")
+    def validates_image(self, key, image):
+        pass
+
+    @validates("genre")
+    def validates_genre(self, key, genre):
+        pass
 
 
     def __repr__(self):
@@ -61,14 +79,18 @@ class Store(db.Model, SerializerMixin):
         if not name:
             raise ValueError("Store must have a name.")
         return name
-    
-    
+
     @validates("hours")
     def validates_hours(self, key, hours):
         if 0 <= hours <= 23:
             return hours
         else:
             raise ValueError('Hours must be between 0 and 23')
+        
+    @validates("location")
+    def validates_location(self, key, location):
+        pass
+
         
     def __repr__(self):
         return f'<Store {self.id}: {self.name}>'
@@ -96,7 +118,27 @@ class Listing(db.Model, SerializerMixin):
 
     
     #Validations
+    @validates("game_id", "store_id")
+    def validates_foriegn_key(self, key, id):
+        if key == "game_id" and isinstance(id, int):
+            return id
+        if key == "store_id" and isinstance(id, int):
+            return id
+        raise ValueError('Id must be an integer')
+    
+    
+    @validates("price")
+    def validates_price(self, key, price):
+        pass
 
-    #repr
+    @validates("stock")
+    def validates_stock(self, key, stock):
+        pass
+
+    @validates("condition")
+    def validates_condition(self, key, condition):
+        pass
+        
+
     def __repr__(self):
         return f'<Listing {self.id}>'
