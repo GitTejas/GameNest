@@ -26,7 +26,6 @@ class Game(db.Model, SerializerMixin):
 
     
     #Validations
-
     @validates("title")
     def validates_title(self, key, title):
         if isinstance(title, str) and 1 < len(title) < 60:
@@ -59,7 +58,6 @@ class Game(db.Model, SerializerMixin):
                 raise ValueError("Each console must be one of PlayStation, Xbox, PC, or Nintendo Switch")
         else:
             raise ValueError("Console must be a string or a list of valid console names")
-
 
     @validates("genre")
     def validates_genre(self, key, genre):
@@ -129,7 +127,6 @@ class Store(db.Model, SerializerMixin):
         else:
             raise ValueError('Hours must be between 0 and 23.')
 
-        
     def __repr__(self):
         return f'<Store {self.id}: {self.name}>'
 
@@ -156,7 +153,6 @@ class Listing(db.Model, SerializerMixin):
 
     
     #Validations
-    
     @validates("price")
     def validates_price(self, key, price):
         # Ensure price is a positive number (float or int)
@@ -183,15 +179,29 @@ class Listing(db.Model, SerializerMixin):
         else:
             raise ValueError("Condition must be either 'New' or 'Used'.")
 
-
     @validates("game_id", "store_id")
-    def validates_foriegn_key(self, key, id):
-        if key == "game_id" and isinstance(id, int):
-            return id
-        if key == "store_id" and isinstance(id, int):
-            return id
-        raise ValueError('Id must be an integer')
-        
+    def validates_foreign_key(self, key, id):
+        # Validate game_id
+        if key == "game_id":
+            if isinstance(id, int) and id > 0:
+                return id
+            else:
+                raise ValueError("game_id must be a positive integer")
+        # Validate store_id
+        if key == "store_id":
+            if isinstance(id, int) and id > 0:
+                return id
+            else:
+                raise ValueError("store_id must be a positive integer")
+        # Default case (shouldn't happen with valid keys)
+        raise ValueError(f"{key} is invalid")
+
+    # @validates("game_id", "store_id")
+    # def validates_foreign_key(self, key, id):
+    #     if isinstance(id, int) and id > 0:
+    #         return id
+    #     else:
+    #         raise ValueError(f'{key} must be a positive integer')    
 
     def __repr__(self):
         return f'<Listing {self.id}>'
