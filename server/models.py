@@ -29,26 +29,50 @@ class Game(db.Model, SerializerMixin):
 
     @validates("title")
     def validates_title(self, key, title):
-        if not title:
-            raise ValueError("Game must have a title.")
-        return title
+        if isinstance(title, str) and 1 < len(title) < 60:
+            return title
+        else:
+            raise ValueError("Title must be a string with more than 1 character and less than 60 characters.")
+
 
     @validates("rating")
     def validates_rating(self, key, rating):
-        pass
+        if rating in ("E", "T", "M"):
+            return rating
+        else:
+            raise ValueError("Rating must be either E, T, or M")
+
 
     @validates("console")
     def validates_console(self, key, console):
-        pass
-
+        # List of valid consoles
+        valid_consoles = {"PlayStation", "Xbox", "PC", "Nintendo Switch"}        
+        if isinstance(console, str):
+            if console in valid_consoles:
+                return console
+            else:
+                raise ValueError("Console must be PlayStation, Xbox, PC, or Nintendo Switch")
+        elif isinstance(console, (list, set)):
+            if all(c in valid_consoles for c in console):
+                return console
+            else:
+                raise ValueError("Each console must be one of PlayStation, Xbox, PC, or Nintendo Switch")
+        else:
+            raise ValueError("Console must be a string or a list of valid console names")
 
     @validates("genre")
     def validates_genre(self, key, genre):
-        pass
+        if isinstance(genre, str) and 1 < len(genre) < 25:
+            return genre
+        else:
+            raise ValueError("Genre must be a string with more than 1 character and less than 25 characters")
+
 
     @validates("image")
     def validates_image(self, key, image):
-        pass
+        if not isinstance(image, str) or not image.strip():
+            raise ValueError("Image must be a non-empty string.")
+        return image
 
     def __repr__(self):
         return f'<Game {self.id}: {self.title}>'

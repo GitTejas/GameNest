@@ -25,7 +25,7 @@ if __name__ == '__main__':
         for _ in range(10):
             game = Game(
                 title=fake.company() + " Game",  # Random game title
-                rating=rc(["E", "T", "M", "AO"]),  # Random game rating
+                rating=rc(["E", "T", "M"]),  # Random game rating
                 console=rc(["PlayStation", "Xbox", "PC", "Nintendo Switch"]),  # Random console
                 genre=rc(["Action", "Adventure", "RPG", "Strategy", "Shooter"]),  # Random genre
                 image=fake.image_url()  # Random image URL
@@ -51,7 +51,7 @@ if __name__ == '__main__':
             listing = Listing(
                 price=round(randint(5, 60) + randint(0, 99) / 100, 2),  # Random price
                 stock=randint(0, 100),  # Random stock quantity
-                condition=rc(["New", "Used", "Refurbished", "Pre-owned"]),  # Added "Pre-owned"
+                condition=rc(["New", "Used"]),  # Random condition
                 game_id=rc([game.id for game in Game.query.all()]),  # Random Game ID
                 store_id=rc([store.id for store in Store.query.all()])  # Random Store ID
             )
