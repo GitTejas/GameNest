@@ -36,7 +36,8 @@ class Game(db.Model, SerializerMixin):
 
     @validates("rating")
     def validates_rating(self, key, rating):
-        if rating in ("E", "T", "M"):
+        # Convert the rating to uppercase for case-insensitive comparison
+        if rating.upper() in ("E", "T", "M"):
             return rating
         else:
             raise ValueError("Rating must be either E, T, or M")
