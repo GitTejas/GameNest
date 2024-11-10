@@ -116,20 +116,28 @@ class Store(db.Model, SerializerMixin):
 
     @validates("hours")
     def validates_hours(self, key, hours):
-        # Ensure hours is an integer and within the valid range
+        # Ensure the hours string is in the correct format
         try:
-            hours = int(hours)  # Convert hours to an integer if it's not already
-        except ValueError:
-            raise ValueError('Hours must be a valid integer between 0 and 23.')
-        
-        if 0 <= hours <= 23:
-            return hours
-        else:
-            raise ValueError('Hours must be between 0 and 23.')
+            # Split the hours string by " - "
+            start_time, end_time = hours.split(" - ")
+
+            # Extract the hour part (before the ":")
+            start_hour = int(start_time.split(":")[0])
+            end_hour = int(end_time.split(":")[0])
+
+            # Check if both start and end hours are valid
+            if not (0 <= start_hour <= 23 and 0 <= end_hour <= 23):
+                raise ValueError('Hours must be between 0 and 23.')
+
+        except (ValueError, IndexError):
+            # Catch any issues with parsing or invalid time ranges
+            raise ValueError('Hours must be in the format "X:00 - Y:00" with valid hours between 0 and 23.')
+
+        # Return the hours if valid
+        return hours
 
     def __repr__(self):
         return f'<Store {self.id}: {self.name}>'
-
 
 
 class Listing(db.Model, SerializerMixin):
