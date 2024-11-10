@@ -167,11 +167,22 @@ class Listing(db.Model, SerializerMixin):
 
     @validates("stock")
     def validates_stock(self, key, stock):
-        pass
+        # Ensure stock is an integer and within the valid range (0 to 100)
+        if isinstance(stock, int) and 0 <= stock <= 100:
+            return stock
+        else:
+           raise ValueError("Stock must be an integer between 0 and 100, inclusive.")
 
     @validates("condition")
     def validates_condition(self, key, condition):
-        pass
+        # Convert condition to title case to handle case insensitivity
+        condition = condition.strip().title()
+
+        if condition in ("New", "Used"):
+            return condition
+        else:
+            raise ValueError("Condition must be either 'New' or 'Used'.")
+
 
     @validates("game_id", "store_id")
     def validates_foriegn_key(self, key, id):
