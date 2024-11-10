@@ -60,6 +60,7 @@ class Game(db.Model, SerializerMixin):
         else:
             raise ValueError("Console must be a string or a list of valid console names")
 
+
     @validates("genre")
     def validates_genre(self, key, genre):
         if isinstance(genre, str) and 1 < len(genre) < 25:
@@ -98,23 +99,37 @@ class Store(db.Model, SerializerMixin):
     #Validations
     @validates("name")
     def validates_name(self, key, name):
-        if not name:
-            raise ValueError("Store must have a name.")
-        return name
-
+        if isinstance(name, str) and 1 < len(name) < 40:
+            return name
+        else:
+            raise ValueError("Store name must be a string with more than 1 character and less than 40 characters.")
 
     @validates("location")
     def validates_location(self, key, location):
-        pass
+        if not isinstance(location, str) or not location.strip():
+            raise ValueError("Location must be a non-empty string.")        
+        # Check for at least one letter and one number
+        has_letter = any(char.isalpha() for char in location)
+        has_number = any(char.isdigit() for char in location)
+        if has_letter and has_number:
+            return location
+        else:
+            raise ValueError("Location must contain both letters and numbers.")
 
 
     @validates("hours")
     def validates_hours(self, key, hours):
+        # Ensure hours is an integer and within the valid range
+        try:
+            hours = int(hours)  # Convert hours to an integer if it's not already
+        except ValueError:
+            raise ValueError('Hours must be a valid integer between 0 and 23.')
+        
         if 0 <= hours <= 23:
             return hours
         else:
-            raise ValueError('Hours must be between 0 and 23')
-        
+            raise ValueError('Hours must be between 0 and 23.')
+
         
     def __repr__(self):
         return f'<Store {self.id}: {self.name}>'
