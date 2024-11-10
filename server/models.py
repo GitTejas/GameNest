@@ -116,7 +116,6 @@ class Store(db.Model, SerializerMixin):
         else:
             raise ValueError("Location must contain both letters and numbers.")
 
-
     @validates("hours")
     def validates_hours(self, key, hours):
         # Ensure hours is an integer and within the valid range
@@ -141,7 +140,7 @@ class Listing(db.Model, SerializerMixin):
 
     id = db.Column(db.Integer, primary_key=True)
     price = db.Column(db.Float)
-    stock = db.Column(db.String, nullable=False)
+    stock = db.Column(db.Integer, nullable=False)
     condition = db.Column(db.String)
 
     game_id = db.Column(db.Integer, db.ForeignKey("games.id"))
@@ -160,7 +159,11 @@ class Listing(db.Model, SerializerMixin):
     
     @validates("price")
     def validates_price(self, key, price):
-        pass
+        # Ensure price is a positive number (float or int)
+        if isinstance(price, (float, int)) and price >= 0:
+            return price
+        else:
+            raise ValueError("Price must be a positive number (float or int).")
 
     @validates("stock")
     def validates_stock(self, key, stock):
