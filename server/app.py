@@ -23,7 +23,7 @@ def index():
 
 class Games(Resource):
     def get(self):
-        games = [game.to_dict(rules=("-listings.game",)) for game in Game.query.all()]
+        games = [game.to_dict(rules=("-listings",)) for game in Game.query.all()]
         return make_response(games, 200)
 
     def post(self):
@@ -45,10 +45,7 @@ class Games(Resource):
         
         except Exception as e:
             return {"errors": "Failed to add game to database", 'message': str(e)}, 500
-
-    def patch(self, id):
-        pass
-
+          
     def delete(self, id):
         pass
 
@@ -57,10 +54,24 @@ class GamesById(Resource):
     def get(self, id):
         game = Game.query.filter(Game.id == id).first()
         return make_response(game.to_dict(), 200)
-    
-    def patch(self, id):
-        pass
 
+    def patch(self, id):
+        json = request.get_json()
+        game = Game.query.filter(Game.id == id).first()
+        if game:
+            try:
+                setattr(game, "title", json['title'])
+                setattr(game, "rating", json['rating'])
+                setattr(game, "console", json['console'])
+                setattr(game, "genre", json['genre'])
+                setattr(game, "image", json['image'])
+                db.session.add(game)
+                db.session.commit()
+                return make_response(game.to_dict(rules=("-listings",)), 202)
+            except ValueError:
+                return make_response({'errors': ["validation errors"]}, 400)
+        else:
+            return make_response({ "error": "Game not found"}, 400)
 
 class Stores(Resource):
     
