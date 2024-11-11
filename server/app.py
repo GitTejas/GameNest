@@ -22,23 +22,29 @@ def index():
 
 
 class Games(Resource):
-
     def get(self):
-        games = [games.to_dict() for games in Game.query.all()]
-
+        games = [game.to_dict(rules=("-listings.game",)) for game in Game.query.all()]
         return make_response(games, 200)
 
-    # def post(self):
-    #     json = request.get_json()
-    #     new_game = Game(
-    #         title = json['title'],
-    #         rating = json['rating'],
-    #         console = json['console'],
-    #         image = json['image']
-    #     )
-    #     db.session.add(new_game)
-    #     db.session.commit()
-    #     return make_response(new_game.to_dict(), 201)
+    def post(self):
+        json = request.get_json()
+        try:
+            new_game = Game(
+                title = json['title'],
+                rating = json['rating'],
+                console = json['console'],
+                genre = json['genre'],
+                image = json['image']
+            )
+            db.session.add(new_game)
+            db.session.commit()
+            return make_response(new_game.to_dict(), 201)
+        
+        except ValueError as e:
+            return {'errors': str(e)}, 400
+        
+        except Exception as e:
+            return {"errors": "Failed to add game to database", 'message': str(e)}, 500
 
     def patch(self, id):
         pass
@@ -50,7 +56,7 @@ class GamesById(Resource):
 
     def get(self, id):
         game = Game.query.filter(Game.id == id).first()
-        return make_response(game, 200)
+        return make_response(game.to_dict(), 200)
     
     def patch(self, id):
         pass
