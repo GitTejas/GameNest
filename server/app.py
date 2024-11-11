@@ -46,14 +46,14 @@ class Games(Resource):
         except Exception as e:
             return {"errors": "Failed to add game to database", 'message': str(e)}, 500
           
-    def delete(self, id):
-        pass
+    # def delete(self, id):
+    #     pass
 
 class GamesById(Resource):
 
     def get(self, id):
         game = Game.query.filter(Game.id == id).first()
-        return make_response(game.to_dict(), 200)
+        return make_response(game.to_dict(rules=("-listings",)), 200)
 
     def patch(self, id):
         json = request.get_json()
@@ -75,7 +75,7 @@ class GamesById(Resource):
 
 class Stores(Resource):
     
-    def get(self,):
+    def get(self):
         pass
 
     def post(self):
