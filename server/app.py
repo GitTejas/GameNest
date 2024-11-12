@@ -44,8 +44,6 @@ class Games(Resource):
         except Exception as e:
             return {"errors": "Failed to add game to database", 'message': str(e)}, 500
           
-    # def delete(self, id):
-    #     pass
 
 class GamesById(Resource):
 
@@ -70,6 +68,17 @@ class GamesById(Resource):
                 return make_response({'errors': ["validation errors"]}, 400)
         else:
             return make_response({ "error": "Game not found"}, 400)
+    
+    def delete(self, id):
+        game = Game.query.filter(Game.id == id).first()
+
+        if game:
+            db.session.delete(game)
+            db.session.commit()
+            return {}, 204
+        else:
+            return {'error': 'Game not found'}, 404
+
 
 class Stores(Resource):
     
@@ -125,11 +134,27 @@ class StoresById(Resource):
 class Listings(Resource):
     
     def get(self):
-        pass
+        listings = [listings.to_dict(rules=("-store", "-game")) for listings in Listing.query.all()]
+        return make_response(listings, 200)
 
     def post(self):
-        pass
-
+        json = request.get_json()
+        try:
+            new_listing = Listing(
+                condition = json['condition'],
+                stock = json['stock'],
+                price = json['price'],
+                game_id = json['game_id'],
+                store_id = json['store_id']
+            )
+            db.session.add(new_listing)
+            db.session.commit()
+            return make_response(new_listing.to_dict(rules=("-store", "-game")), 201)
+        except ValueError as e:
+            return {"errors": str(e)}, 400
+        except Exception as e:
+            return {"errors": "Failed to add game to database", 'message': str(e)}, 500
+    
     def patch(self, id):
         pass
 
