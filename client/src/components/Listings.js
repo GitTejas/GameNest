@@ -5,7 +5,8 @@ import * as Yup from 'yup';
 function Listings() {
   const [listings, setListings] = useState([]);
   const [editingListing, setEditingListing] = useState(null);
-  const [sortCriterion, setSortCriterion] = useState(''); // New state for sorting criterion
+  const [sortCriterion, setSortCriterion] = useState('');
+  const [priceFilter, setPriceFilter] = useState('all'); // New state for price filter
 
   // Fetch listings on component mount
   useEffect(() => {
@@ -15,15 +16,21 @@ function Listings() {
       .catch((error) => console.error('Error fetching listings:', error));
   }, []);
 
-  // Sort listings based on the selected criterion
-  const sortedListings = [...listings].sort((a, b) => {
-    if (sortCriterion === 'game') {
-      return (a.game?.title || '').localeCompare(b.game?.title || '');
-    } else if (sortCriterion === 'store') {
-      return (a.store?.name || '').localeCompare(b.store?.name || '');
-    }
-    return 0;
-  });
+  // Filter and sort listings
+  const filteredAndSortedListings = [...listings]
+    .filter((listing) => {
+      if (priceFilter === 'under30') return listing.price < 30;
+      if (priceFilter === 'over30') return listing.price >= 30;
+      return true;
+    })
+    .sort((a, b) => {
+      if (sortCriterion === 'game') {
+        return (a.game?.title || '').localeCompare(b.game?.title || '');
+      } else if (sortCriterion === 'store') {
+        return (a.store?.name || '').localeCompare(b.store?.name || '');
+      }
+      return 0;
+    });
 
   // Formik validation schema using Yup
   const validationSchema = Yup.object({
@@ -105,9 +112,19 @@ function Listings() {
         onChange={(e) => setSortCriterion(e.target.value)}
       >
         <option value="">Select</option>
-        <option value="game">Game Title</option>
-        <option value="store">Store Name</option>
+        <option value="game">Game Title (A-Z)</option>
+        <option value="store">Store Name (A-Z)</option>
       </select>
+      <br>
+      </br>
+      <br>
+      </br>
+      {/* Price Filter Buttons */}
+      <div>
+        <button onClick={() => setPriceFilter('all')}>All</button>
+        <button onClick={() => setPriceFilter('under30')}>Under $30</button>
+        <button onClick={() => setPriceFilter('over30')}>Over $30</button>
+      </div>
 
       <form onSubmit={formik.handleSubmit}>
         <input
@@ -164,7 +181,7 @@ function Listings() {
       </form>
 
       <ul>
-        {sortedListings.map((listing) => (
+        {filteredAndSortedListings.map((listing) => (
           <li key={listing.id}>
             <h3>Game: {listing.game ? listing.game.title : 'No Title Available'}</h3>
             <p>Condition: {listing.condition}</p>
