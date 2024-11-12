@@ -1,4 +1,95 @@
 :root {
+  --bg: linear-gradient(135deg, #222222, #6c757d);
+  --header: #f8f9fa;
+  --link: #f1c40f;
+  --link-hover: #e67e22;
+  --text: rgba(255, 255, 255, 0.85);
+  --card-bg: #343a40;
+  --form-bg: #495057;
+  --form-border: #f39c12;
+  --form-hover: #f1c40f;
+}
+
+body {
+  font-family: 'Lora', serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+nav ul {
+  list-style-type: none;
+  display: flex;
+  justify-content: space-evenly;  /* Changed from space-between to space-evenly */
+  background-color: #212529;
+  padding: 14px;
+  border-radius: 8px;
+}
+
+nav ul li {
+  margin: 0 8px;  /* Reduced the margin to bring buttons closer */
+}
+
+nav ul li a {
+  color: var(--link);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s, text-shadow 0.3s ease;
+}
+
+nav ul li a:hover {
+  color: var(--link-hover);
+  text-shadow: 0 0 12px var(--link-hover);
+}
+
+
+h1, h2, h3 {
+  text-align: center;
+  color: var(--header);
+  font-family: 'Roboto', sans-serif;
+}
+
+form input, form button {
+  display: block;
+  margin: 16px auto;
+  padding: 16px;
+  width: 80%;
+  max-width: 460px;
+  border-radius: 8px;
+  border: 2px solid var(--form-border);
+  background-color: var(--form-bg);
+  color: rgb(255, 255, 255);
+  transition: box-shadow 0.3s ease, transform 0.3s ease, background-color 0.3s ease;
+}
+
+form input:focus, form button:hover {
+  background-color: var(--form-hover);
+  box-shadow: 0 0 10px rgba(243, 156, 18, 0.6);
+  transform: scale(1.05);
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+ul li {
+  margin: 14px 0;
+  padding: 18px;
+  background-color: var(--card-bg);
+  border: 1px solid #212529;
+  border-radius: 10px;
+  box-shadow: 0 5px 8px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s;
+}
+
+ul li:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.4);
+}
+
+
+
+/* :root {
   --bg: #282c34;
   --header: #fff;
   --link: #61dafb;
@@ -48,7 +139,11 @@ ul li {
   margin: 10px 0;
   padding: 10px;
   border: 1px solid #ddd;
-}
+} */
+
+
+
+
 
 
 

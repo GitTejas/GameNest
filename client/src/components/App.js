@@ -13,7 +13,7 @@ function App() {
     <Router>
       <div className="App">
         <Navbar />
-        <h1>Game Nest</h1>
+        <h1>GameNest</h1>
         <Routes>
           <Route path="/" element={<GameManager />} />
           {/* <Route path="/games" element={<GameForm />} /> */}

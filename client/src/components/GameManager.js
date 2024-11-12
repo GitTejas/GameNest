@@ -136,7 +136,7 @@ const formik = useFormik({
 
     return (
         <div>
-            <h2>Game Manager</h2>
+            <h2>Game Form</h2>
             <form onSubmit={formik.handleSubmit}>
                 <input
                     type="text"
