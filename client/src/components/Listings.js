@@ -5,6 +5,7 @@ import * as Yup from 'yup';
 function Listings() {
   const [listings, setListings] = useState([]);
   const [editingListing, setEditingListing] = useState(null);
+  const [sortCriterion, setSortCriterion] = useState(''); // New state for sorting criterion
 
   // Fetch listings on component mount
   useEffect(() => {
@@ -13,6 +14,16 @@ function Listings() {
       .then((data) => setListings(data))
       .catch((error) => console.error('Error fetching listings:', error));
   }, []);
+
+  // Sort listings based on the selected criterion
+  const sortedListings = [...listings].sort((a, b) => {
+    if (sortCriterion === 'game') {
+      return (a.game?.title || '').localeCompare(b.game?.title || '');
+    } else if (sortCriterion === 'store') {
+      return (a.store?.name || '').localeCompare(b.store?.name || '');
+    }
+    return 0;
+  });
 
   // Formik validation schema using Yup
   const validationSchema = Yup.object({
@@ -23,7 +34,6 @@ function Listings() {
     store_id: Yup.string().required('Store ID is required'),
   });
 
-  // Formik hook to manage form state and handle submissions
   const formik = useFormik({
     initialValues: {
       condition: '',
@@ -35,16 +45,14 @@ function Listings() {
     validationSchema,
     onSubmit: (values) => {
       const method = editingListing ? 'PATCH' : 'POST';
-      const url = editingListing
-        ? `/listings/${editingListing.id}`
-        : '/listings';
+      const url = editingListing ? `/listings/${editingListing.id}` : '/listings';
 
       fetch(url, {
         method,
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(values),  // Send all form values
+        body: JSON.stringify(values),
       })
         .then((response) => response.json())
         .then((addedListing) => {
@@ -64,7 +72,6 @@ function Listings() {
     },
   });
 
-  // Handle editing a listing
   const handleEdit = (listing) => {
     setEditingListing(listing);
     formik.setValues({
@@ -76,7 +83,6 @@ function Listings() {
     });
   };
 
-  // Handle deleting a listing
   const handleDelete = (id) => {
     fetch(`/listings/${id}`, {
       method: 'DELETE',
@@ -90,6 +96,18 @@ function Listings() {
   return (
     <div>
       <h2>Listings</h2>
+
+      {/* Sorting dropdown */}
+      <label htmlFor="sort">Sort by: </label>
+      <select
+        id="sort"
+        value={sortCriterion}
+        onChange={(e) => setSortCriterion(e.target.value)}
+      >
+        <option value="">Select</option>
+        <option value="game">Game Title</option>
+        <option value="store">Store Name</option>
+      </select>
 
       <form onSubmit={formik.handleSubmit}>
         <input
@@ -146,7 +164,7 @@ function Listings() {
       </form>
 
       <ul>
-        {listings.map((listing) => (
+        {sortedListings.map((listing) => (
           <li key={listing.id}>
             <h3>Game: {listing.game ? listing.game.title : 'No Title Available'}</h3>
             <p>Condition: {listing.condition}</p>
