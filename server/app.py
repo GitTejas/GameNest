@@ -132,49 +132,96 @@ class StoresById(Resource):
 
 class Listings(Resource):
     def get(self):
-        listings = [listings.to_dict(rules=("-store", "-game")) for listings in Listing.query.all()]
+        listings = [listings.to_dict() for listings in Listing.query.all()]
         return make_response(listings, 200)
 
     def post(self):
         json = request.get_json()
         try:
+            # Assuming you have a Listing model with foreign keys to Game and Store
+            game = Game.query.get(json['game_id'])
+            store = Store.query.get(json['store_id'])
+            
+            if not game or not store:
+                return make_response({'error': 'Game or Store not found'}, 404)
+            
+            # Create the new listing
             new_listing = Listing(
-                condition = json['condition'],
-                stock = json['stock'],
-                price = json['price'],
-                game_id = json['game_id'],
-                store_id = json['store_id']
+                condition=json['condition'],
+                stock=json['stock'],
+                price=json['price'],
+                game=game,  # Associate the game object
+                store=store  # Associate the store object
             )
             db.session.add(new_listing)
             db.session.commit()
-            return make_response(new_listing.to_dict(rules=("-store", "-game")), 201)
-        except ValueError as e:
-            return {"errors": str(e)}, 400
+            return make_response(new_listing.to_dict(), 201)
         except Exception as e:
-            return {"errors": "Failed to create listing", 'message': str(e)}, 500
+            return {"errors": "Failed to add listing", 'message': str(e)}, 500
+        
+    # def post(self):
+    #     json = request.get_json()
+    #     try:
+    #         new_listing = Listing(
+    #             condition = json['condition'],
+    #             stock = json['stock'],
+    #             price = json['price'],
+    #             game_id = json['game_id'],
+    #             store_id = json['store_id']
+    #         )
+    #         db.session.add(new_listing)
+    #         db.session.commit()
+    #         return make_response(new_listing.to_dict(), 201)
+    #     except ValueError as e:
+    #         return {"errors": str(e)}, 400
+    #     except Exception as e:
+    #         return {"errors": "Failed to create listing", 'message': str(e)}, 500
         
 class ListingsById(Resource):
     def get(self, id):
         listings = Listing.query.filter(Listing.id == id).first()
-        return make_response(listings.to_dict(rules=("-game", "-store")), 200)
+        return make_response(listings.to_dict(), 200)
 
     def patch(self, id):
         json = request.get_json()
-        listing = Listing.query.filter(Listing.id == id).first()
+        listing = Listing.query.filter_by(id=id).first()
+        
         if listing:
-            try:
-                setattr(listing, "condition", json['condition'])
-                setattr(listing, "stock", json['stock'])
-                setattr(listing, "price", json['price'])
-                setattr(listing, "game_id", json['game_id'])
-                setattr(listing, "store_id", json['store_id'])
-                db.session.add(listing)
-                db.session.commit()
-                return make_response(listing.to_dict(rules=("-game", "-store")), 202)
-            except ValueError:
-                return make_response({'errors': ["validation errors"]}, 400)
+            game = Game.query.get(json['game_id'])
+            store = Store.query.get(json['store_id'])
+            
+            if game:
+                listing.game = game
+            if store:
+                listing.store = store
+            
+            # Update other fields
+            listing.condition = json['condition']
+            listing.stock = json['stock']
+            listing.price = json['price']
+
+            db.session.commit()
+            return make_response(listing.to_dict(), 200)
         else:
-            return make_response({ "error": "Store not found"}, 400) 
+            return make_response({'error': 'Listing not found'}, 404)
+        
+    # def patch(self, id):
+    #     json = request.get_json()
+    #     listing = Listing.query.filter(Listing.id == id).first()
+    #     if listing:
+    #         try:
+    #             setattr(listing, "condition", json['condition'])
+    #             setattr(listing, "stock", json['stock'])
+    #             setattr(listing, "price", json['price'])
+    #             setattr(listing, "game_id", json['game_id'])
+    #             setattr(listing, "store_id", json['store_id'])
+    #             db.session.add(listing)
+    #             db.session.commit()
+    #             return make_response(listing.to_dict(), 202)
+    #         except ValueError:
+    #             return make_response({'errors': ["validation errors"]}, 400)
+    #     else:
+    #         return make_response({ "error": "Store not found"}, 400) 
 
     def delete(self, id):
         listing = Listing.query.filter(Listing.id == id).first()

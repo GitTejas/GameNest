@@ -5,3 +5,47 @@
   --text: hsla(0, 0%, 100%, 0.88);
 }
 
+body {
+  font-family: Arial, sans-serif;
+}
+
+nav ul {
+  list-style-type: none;
+  display: flex;
+  justify-content: space-around;
+  background-color: #333;
+  padding: 10px;
+}
+
+nav ul li {
+  margin: 0;
+}
+
+nav ul li a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+h1, h2, h3 {
+  text-align: center;
+}
+
+form input, form button {
+  display: block;
+  margin: 10px auto;
+  padding: 10px;
+  width: 80%;
+  max-width: 400px;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+ul li {
+  margin: 10px 0;
+  padding: 10px;
+  border: 1px solid #ddd;
+}
