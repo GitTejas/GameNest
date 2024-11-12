@@ -7,7 +7,6 @@ function Navbar() {
         <nav>
             <ul>
                 <li><Link to="/">Games</Link></li>
-                {/* <li><Link to="/games">Add Game</Link></li> */}
                 <li><Link to="/stores">Stores</Link></li>
                 <li><Link to="/listings">Listings</Link></li>
             </ul>

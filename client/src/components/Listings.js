@@ -51,9 +51,11 @@ function Listings() {
     },
     validationSchema,
     onSubmit: (values) => {
+      if (!formik.isValid) return; // Prevent submit if form is invalid
+  
       const method = editingListing ? 'PATCH' : 'POST';
       const url = editingListing ? `/listings/${editingListing.id}` : '/listings';
-
+  
       fetch(url, {
         method,
         headers: {
@@ -61,7 +63,12 @@ function Listings() {
         },
         body: JSON.stringify(values),
       })
-        .then((response) => response.json())
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Server validation failed");
+          }
+          return response.json();
+        })
         .then((addedListing) => {
           if (editingListing) {
             setListings((prevListings) =>
