@@ -37,7 +37,6 @@ if __name__ == '__main__':
             {"title": "The Witcher 3: Wild Hunt", "image": "https://upload.wikimedia.org/wikipedia/en/0/0c/Witcher_3_cover_art.jpg"}
         ]
 
-        # Seed Games with predefined data
         print("Seeding Games...")
         for game_data in predefined_games:
             game = Game(
@@ -61,7 +60,6 @@ if __name__ == '__main__':
         #     )
         #     db.session.add(game)
 
-        # Predefined list of store names and locations
         predefined_stores = [
             {"name": "GameStop", "location": "640 Camino Del Rio N STE 317A, San Diego, CA 92108"},
             {"name": "EB Games", "location": "2612 S Shepherd Dr Houston, TX 77098"},
@@ -70,7 +68,6 @@ if __name__ == '__main__':
             {"name": "Gaming Odyssey", "location": "1400 Skyline Blvd, Bismarck, ND 58503"},
         ]
 
-        # Seed Stores with predefined data
         print("Seeding Stores...")
         for store_data in predefined_stores:
             store = Store(
@@ -90,7 +87,6 @@ if __name__ == '__main__':
             )
             db.session.add(store)
 
-        # Commit the games and stores first
         db.session.commit()
 
         # Seed Listings
