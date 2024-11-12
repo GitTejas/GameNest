@@ -13,7 +13,6 @@ from config import app, db, api
 # Add your model imports
 from models import Game, Store, Listing
 
-# Views go here!
 @app.route('/')
 def index():
     return '<h1>Project Server</h1>'
@@ -45,7 +44,6 @@ class Games(Resource):
           
 
 class GamesById(Resource):
-
     def get(self, id):
         game = Game.query.filter(Game.id == id).first()
         return make_response(game.to_dict(rules=("-listings",)), 200)
@@ -80,7 +78,6 @@ class GamesById(Resource):
 
 
 class Stores(Resource):
-    
     def get(self):
         stores = [stores.to_dict(rules=("-listings",)) for stores in Store.query.all()]
         return make_response(stores, 200)
@@ -102,7 +99,6 @@ class Stores(Resource):
             return {"errors": "Failed to add store to database", 'message': str(e)}, 500
 
 class StoresById(Resource):
-
     def get(self, id):
         store = Store.query.filter(Store.id == id).first()
         return make_response(store.to_dict(rules=("-listings",)), 200)
@@ -135,7 +131,6 @@ class StoresById(Resource):
                 
 
 class Listings(Resource):
-    
     def get(self):
         listings = [listings.to_dict(rules=("-store", "-game")) for listings in Listing.query.all()]
         return make_response(listings, 200)
@@ -159,7 +154,6 @@ class Listings(Resource):
             return {"errors": "Failed to create listing", 'message': str(e)}, 500
         
 class ListingsById(Resource):
-    
     def get(self, id):
         listings = Listing.query.filter(Listing.id == id).first()
         return make_response(listings.to_dict(rules=("-game", "-store")), 200)
