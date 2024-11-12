@@ -61,8 +61,8 @@ class GamesById(Resource):
                 db.session.add(game)
                 db.session.commit()
                 return make_response(game.to_dict(rules=("-listings",)), 202)
-            except ValueError:
-                return make_response({'errors': ["validation errors"]}, 400)
+            except Exception as e:
+                return make_response({"errors": "Failed to update game", "message": str(e)}, 400)
         else:
             return make_response({ "error": "Game not found"}, 400)
     

@@ -56,9 +56,9 @@ function GameForm({ addGame, updateGame, isEditing, currentGame }) {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
             />
-            {formik.touched.title && formik.errors.title ? (
+            {formik.touched.title && formik.errors.title && (
                 <div style={{ color: 'red' }}>{formik.errors.title}</div>
-            ) : null}
+            )}
 
             <input
                 type="text"
@@ -68,9 +68,9 @@ function GameForm({ addGame, updateGame, isEditing, currentGame }) {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
             />
-            {formik.touched.rating && formik.errors.rating ? (
+            {formik.touched.rating && formik.errors.rating && (
                 <div style={{ color: 'red' }}>{formik.errors.rating}</div>
-            ) : null}
+            )}
 
             <input
                 type="text"
@@ -80,9 +80,9 @@ function GameForm({ addGame, updateGame, isEditing, currentGame }) {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
             />
-            {formik.touched.console && formik.errors.console ? (
+            {formik.touched.console && formik.errors.console && (
                 <div style={{ color: 'red' }}>{formik.errors.console}</div>
-            ) : null}
+            )}
 
             <input
                 type="text"
@@ -92,9 +92,9 @@ function GameForm({ addGame, updateGame, isEditing, currentGame }) {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
             />
-            {formik.touched.genre && formik.errors.genre ? (
+            {formik.touched.genre && formik.errors.genre && (
                 <div style={{ color: 'red' }}>{formik.errors.genre}</div>
-            ) : null}
+            )}
 
             <input
                 type="text"
@@ -104,9 +104,9 @@ function GameForm({ addGame, updateGame, isEditing, currentGame }) {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
             />
-            {formik.touched.image && formik.errors.image ? (
+            {formik.touched.image && formik.errors.image && (
                 <div style={{ color: 'red' }}>{formik.errors.image}</div>
-            ) : null}
+            )}
 
             <button type="submit">{isEditing ? 'Update Game' : 'Add Game'}</button>
         </form>

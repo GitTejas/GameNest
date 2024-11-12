@@ -6,7 +6,7 @@ function Listings() {
   const [listings, setListings] = useState([]);
 
   useEffect(() => {
-    fetch('/api/listings')
+    fetch('/listings')
       .then(response => response.json())
       .then(data => setListings(data))
       .catch(error => console.error(error));
