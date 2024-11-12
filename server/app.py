@@ -102,12 +102,6 @@ class Stores(Resource):
         except Exception as e:
             return {"errors": "Failed to add store to database", 'message': str(e)}, 500
 
-    # def patch(self, id):
-    #     pass
-
-    # def delete(self, id):
-    #     pass
-
 class StoresById(Resource):
 
     def get(self, id):
@@ -129,6 +123,16 @@ class StoresById(Resource):
                 return make_response({'errors': ["validation errors"]}, 400)
         else:
             return make_response({ "error": "Store not found"}, 400)    
+
+    def delete(self, id):
+        store = Store.query.filter(Store.id == id).first()
+
+        if store:
+            db.session.delete(store)
+            db.session.commit()
+            return {}, 204
+        else:
+            return {'error': 'Store not found'}, 404
                 
 
 class Listings(Resource):
@@ -153,8 +157,14 @@ class Listings(Resource):
         except ValueError as e:
             return {"errors": str(e)}, 400
         except Exception as e:
-            return {"errors": "Failed to add game to database", 'message': str(e)}, 500
+            return {"errors": "Failed to create listing", 'message': str(e)}, 500
+        
+class ListingsById(Resource):
     
+    def get(self, id):
+        listings = Listing.query.filter(Listing.id == id).first()
+        return make_response(listings.to_dict(rules=("-game", "-store")), 200)
+
     def patch(self, id):
         pass
 
@@ -167,6 +177,7 @@ api.add_resource(GamesById, "/games/<int:id>")
 api.add_resource(Stores, "/stores")
 api.add_resource(StoresById, "/stores/<int:id>")
 api.add_resource(Listings, "/listings")
+api.add_resource(ListingsById, '/listings/<int:id>')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
