@@ -1,77 +1,114 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 
 function GameForm({ addGame, updateGame, isEditing, currentGame }) {
-    const [title, setTitle] = useState("");
-    const [rating, setRating] = useState("");
-    const [console, setConsole] = useState("");
-    const [genre, setGenre] = useState("");
-    const [image, setImage] = useState("");
+    // Define a validation schema with Yup
+    const validationSchema = Yup.object({
+        title: Yup.string().required('Title is required'),
+        rating: Yup.string().required('Rating is required'),
+        console: Yup.string().required('Console is required'),
+        genre: Yup.string().required('Genre is required'),
+        image: Yup.string().url('Invalid URL').required('Image URL is required'),
+    });
 
+    // Set up Formik with initial values, validation schema, and onSubmit handler
+    const formik = useFormik({
+        initialValues: {
+            title: '',
+            rating: '',
+            console: '',
+            genre: '',
+            image: '',
+        },
+        validationSchema: validationSchema,
+        onSubmit: (values) => {
+            const gameData = { ...values };
+            if (isEditing && currentGame) {
+                updateGame({ ...gameData, id: currentGame.id });
+            } else {
+                addGame(gameData);
+            }
+            formik.resetForm(); // Clear the form after submission
+        },
+    });
+
+    // Populate form fields when editing an existing game
     useEffect(() => {
         if (isEditing && currentGame) {
-            setTitle(currentGame.title);
-            setRating(currentGame.rating);
-            setConsole(currentGame.console);
-            setGenre(currentGame.genre);
-            setImage(currentGame.image);
+            formik.setValues({
+                title: currentGame.title,
+                rating: currentGame.rating,
+                console: currentGame.console,
+                genre: currentGame.genre,
+                image: currentGame.image,
+            });
         }
     }, [isEditing, currentGame]);
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        const gameData = { title, rating, console, genre, image };
-
-        if (isEditing) {
-            updateGame({ ...gameData, id: currentGame.id });
-        } else {
-            addGame(gameData);
-        }
-
-        // Clear form
-        setTitle("");
-        setRating("");
-        setConsole("");
-        setGenre("");
-        setImage("");
-    };
-
     return (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={formik.handleSubmit}>
             <input
                 type="text"
+                name="title"
                 placeholder="Title"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                required
+                value={formik.values.title}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
             />
+            {formik.touched.title && formik.errors.title ? (
+                <div style={{ color: 'red' }}>{formik.errors.title}</div>
+            ) : null}
+
             <input
                 type="text"
+                name="rating"
                 placeholder="Rating"
-                value={rating}
-                onChange={(e) => setRating(e.target.value)}
-                required
+                value={formik.values.rating}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
             />
+            {formik.touched.rating && formik.errors.rating ? (
+                <div style={{ color: 'red' }}>{formik.errors.rating}</div>
+            ) : null}
+
             <input
                 type="text"
+                name="console"
                 placeholder="Console"
-                value={console}
-                onChange={(e) => setConsole(e.target.value)}
-                required
+                value={formik.values.console}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
             />
+            {formik.touched.console && formik.errors.console ? (
+                <div style={{ color: 'red' }}>{formik.errors.console}</div>
+            ) : null}
+
             <input
                 type="text"
+                name="genre"
                 placeholder="Genre"
-                value={genre}
-                onChange={(e) => setGenre(e.target.value)}
-                required
+                value={formik.values.genre}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
             />
+            {formik.touched.genre && formik.errors.genre ? (
+                <div style={{ color: 'red' }}>{formik.errors.genre}</div>
+            ) : null}
+
             <input
                 type="text"
+                name="image"
                 placeholder="Image URL"
-                value={image}
-                onChange={(e) => setImage(e.target.value)}
+                value={formik.values.image}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
             />
-            <button type="submit">{isEditing ? "Update Game" : "Add Game"}</button>
+            {formik.touched.image && formik.errors.image ? (
+                <div style={{ color: 'red' }}>{formik.errors.image}</div>
+            ) : null}
+
+            <button type="submit">{isEditing ? 'Update Game' : 'Add Game'}</button>
         </form>
     );
 }
