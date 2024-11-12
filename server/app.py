@@ -191,6 +191,11 @@ class GamesByConsole(Resource):
         games = [game.to_dict(rules=("-listings",)) for game in Game.query.filter(Game.console == console).all()]
         return make_response(games, 200)
     
+class GamesByTitle(Resource):
+    def get(self, title):
+        games = [game.to_dict(rules=("-listings",)) for game in Game.query.filter(Game.title == title).all()]
+        return make_response(games, 200)
+    
 class GamesByRating(Resource):
     def get(self, rating):
         games = [game.to_dict(rules=("-listings",)) for game in Game.query.filter(Game.rating == rating).all()]
@@ -229,6 +234,7 @@ api.add_resource(ListingsById, '/listings/<int:id>')
 api.add_resource(GamesByConsole, "/games/console/<string:console>")
 api.add_resource(GamesByRating, "/games/rating/<string:rating>")
 api.add_resource(GamesByGenre, "/games/genre/<string:genre>")
+api.add_resource(GamesByTitle, "/games/title/<string:title>")
 api.add_resource(ListingsByCondition, "/listings/condition/<string:condition>")
 api.add_resource(StoresByName, "/stores/name/<string:name>")
 api.add_resource(StoresByLocation, "/stores/location/<string:location>")
