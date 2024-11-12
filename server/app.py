@@ -18,7 +18,6 @@ from models import Game, Store, Listing
 def index():
     return '<h1>Project Server</h1>'
 
-
 class Games(Resource):
     def get(self):
         games = [game.to_dict(rules=("-listings",)) for game in Game.query.all()]
@@ -193,12 +192,52 @@ class ListingsById(Resource):
         else:
             return {'error': 'Listing not found'}, 404
 
+class GamesByConsole(Resource):
+    def get(self, console):
+        games = [game.to_dict(rules=("-listings",)) for game in Game.query.filter(Game.console == console).all()]
+        return make_response(games, 200)
+    
+class GamesByRating(Resource):
+    def get(self, rating):
+        games = [game.to_dict(rules=("-listings",)) for game in Game.query.filter(Game.rating == rating).all()]
+        return make_response(games, 200)
+    
+class GamesByGenre(Resource):
+    def get(self, genre):
+        games = [game.to_dict(rules=("-listings",)) for game in Game.query.filter(Game.genre.ilike(f"%{genre}%")).all()]
+        return make_response(games, 200)
+
+class ListingsByCondition(Resource):
+    def get(self, condition):
+        listings = [listing.to_dict(rules=("-store", "-game")) for listing in Listing.query.filter(Listing.condition == condition).all()]
+        return make_response(listings, 200)
+    
+class StoresByName(Resource):
+    def get(self, name):
+        store = Store.query.filter(Store.name.ilike(f"%{name}%")).all()
+        if store:
+            return make_response([s.to_dict(rules=("-listings",)) for s in store], 200)
+        else:
+            return {'error': 'Store not found'}, 404
+
+class StoresByLocation(Resource):
+    def get(self, location):
+        stores = [store.to_dict(rules=("-listings",)) for store in Store.query.filter(Store.location.ilike(f"%{location}%")).all()]
+        return make_response(stores, 200)
+
+
 api.add_resource(Games, "/games")
 api.add_resource(GamesById, "/games/<int:id>")
 api.add_resource(Stores, "/stores")
 api.add_resource(StoresById, "/stores/<int:id>")
 api.add_resource(Listings, "/listings")
 api.add_resource(ListingsById, '/listings/<int:id>')
+api.add_resource(GamesByConsole, "/games/console/<string:console>")
+api.add_resource(GamesByRating, "/games/rating/<string:rating>")
+api.add_resource(GamesByGenre, "/games/genre/<string:genre>")
+api.add_resource(ListingsByCondition, "/listings/condition/<string:condition>")
+api.add_resource(StoresByName, "/stores/name/<string:name>")
+api.add_resource(StoresByLocation, "/stores/location/<string:location>")
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
