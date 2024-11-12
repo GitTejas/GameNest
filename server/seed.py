@@ -21,7 +21,7 @@ if __name__ == '__main__':
 
         # Predefined list of game titles and images
         predefined_games = [
-            {"title": "Mega Man", "image": "https://static.wikia.nocookie.net/megaman/images/4/42/Kotobukiya%27s_X_Model_Kit.jpg/revision/latest?cb=20220501181742"},
+            {"title": "Mega Man", "image": "https://upload.wikimedia.org/wikipedia/en/b/bf/Mega_Man_X4_PSX.jpg"},
             {"title": "Donkey Kong", "image": "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcSuZ4WZ1W_-MfVFcVHuiXseEXJ5YeW5yQAdEb7BQ4thjhQRqp3FTDo4m8T7wXmodDkYDssk"},
             {"title": "Rise of the Ronin", "image": "https://image.api.playstation.com/vulcan/ap/rnd/202212/2201/ZfPosZoz1CKZBHTIKUCQRy47.png"},
             {"title": "Super Smash Bros.", "image": "https://assets.nintendo.com/image/upload/q_auto:best/f_auto/dpr_2.0/ncom/software/switch/70010000012332/ac4d1fc9824876ce756406f0525d50c57ded4b2a666f6dfe40a6ac5c3563fad9"},
@@ -29,11 +29,16 @@ if __name__ == '__main__':
             {"title": "Nioh II", "image": "https://image.api.playstation.com/vulcan/img/rnd/202011/0423/P7Sm4r3F8krCQcnN5uqwsS00.png"},
             {"title": "Elden Ring", "image": "https://image.api.playstation.com/vulcan/ap/rnd/202110/2000/aGhopp3MHppi7kooGE2Dtt8C.png"},
             {"title": "Dark Souls 3", "image": "https://static.bandainamcoent.eu/high/dark-souls/dark-souls-3/00-page-setup/ds3_game-thumbnail.jpg"},
-            {"title": "Ninja Gaiden", "image": "https://static.wikia.nocookie.net/deadoralive/images/6/62/Img-hayabusa.png/revision/latest/scale-to-width-down/1000?cb=20180613004303"},
+            {"title": "Pokemon Fallen Thrones", "image": "https://i.imgur.com/VP0VH7E.png"},
+            {"title": "Ninja Gaiden", "image": "https://www.lilithia.net/wp-content/uploads/2021/06/ninjagaidencollection-1576x1182.jpg"},
+            {"title": "The Legend of Zelda: Breath of the Wild", "image": "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcSO0-bXLKMPSHQECjZUuy4gbwdgmF-7sfhHQ0b59Q2nv8ZZiBzgHEu5mwDuVLBPf71rkB_zQA"},
+            {"title": "Grand Theft Auto V", "image": "https://upload.wikimedia.org/wikipedia/en/a/a5/Grand_Theft_Auto_V.png"},
+            {"title": "Cyberpunk 2077", "image": "https://upload.wikimedia.org/wikipedia/en/9/9f/Cyberpunk_2077_box_art.jpg"},
+            {"title": "The Witcher 3: Wild Hunt", "image": "https://upload.wikimedia.org/wikipedia/en/0/0c/Witcher_3_cover_art.jpg"}
         ]
 
         # Seed Games with predefined data
-        print("Seeding Games with predefined data...")
+        print("Seeding Games...")
         for game_data in predefined_games:
             game = Game(
                 title=game_data["title"],
@@ -44,17 +49,17 @@ if __name__ == '__main__':
             )
             db.session.add(game)
 
-        # Add additional random games if needed
-        print("Seeding additional random Games...")
-        for _ in range(10 - len(predefined_games)):
-            game = Game(
-                title=fake.company() + " Game",
-                rating=rc(["E", "T", "M"]),
-                console=rc(["PlayStation", "Xbox", "PC", "Nintendo Switch"]),
-                genre=rc(["Action", "Adventure", "RPG", "Strategy", "Shooter"]),
-                image=fake.image_url()
-            )
-            db.session.add(game)
+        # # Add additional random games if needed
+        # print("Seeding additional random Games...")
+        # for _ in range(10 - len(predefined_games)):
+        #     game = Game(
+        #         title=fake.company() + " Game",
+        #         rating=rc(["E", "T", "M"]),
+        #         console=rc(["PlayStation", "Xbox", "PC", "Nintendo Switch"]),
+        #         genre=rc(["Action", "Adventure", "RPG", "Strategy", "Shooter"]),
+        #         image=fake.image_url()
+        #     )
+        #     db.session.add(game)
 
         # Predefined list of store names and locations
         predefined_stores = [
@@ -66,7 +71,7 @@ if __name__ == '__main__':
         ]
 
         # Seed Stores with predefined data
-        print("Seeding Stores with predefined data...")
+        print("Seeding Stores...")
         for store_data in predefined_stores:
             store = Store(
                 name=store_data["name"],
