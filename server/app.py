@@ -13,9 +13,7 @@ from config import app, db, api
 # Add your model imports
 from models import Game, Store, Listing
 
-
 # Views go here!
-
 @app.route('/')
 def index():
     return '<h1>Project Server</h1>'
@@ -76,25 +74,53 @@ class GamesById(Resource):
 class Stores(Resource):
     
     def get(self):
-        pass
+        stores = [stores.to_dict(rules=("-listings",)) for stores in Store.query.all()]
+        return make_response(stores, 200)
 
     def post(self):
-        pass
+        json = request.get_json()
+        try:
+            new_store = Store(
+                name = json['name'],
+                location = json['location'],
+                hours = json['hours'] 
+            )
+            db.session.add(new_store)
+            db.session.commit()
+            return make_response(new_store.to_dict(), 201)
+        except ValueError as e:
+            return {'errors': str(e)}, 400
+        except Exception as e:
+            return {"errors": "Failed to add store to database", 'message': str(e)}, 500
 
-    def patch(self, id):
-        pass
+    # def patch(self, id):
+    #     pass
 
-    def delete(self, id):
-        pass
+    # def delete(self, id):
+    #     pass
 
 class StoresById(Resource):
 
-    def get(self):
-        pass
+    def get(self, id):
+        store = Store.query.filter(Store.id == id).first()
+        return make_response(store.to_dict(rules=("-listings",)), 200)
     
     def patch(self, id):
-        pass
-
+        json = request.get_json()
+        store = Store.query.filter(Store.id == id).first()
+        if store:
+            try:
+                setattr(store, "name", json['name'])
+                setattr(store, "location", json['location'])
+                setattr(store, "hours", json['hours'])
+                db.session.add(store)
+                db.session.commit()
+                return make_response(store.to_dict(rules=("-listings",)), 202)
+            except ValueError:
+                return make_response({'errors': ["validation errors"]}, 400)
+        else:
+            return make_response({ "error": "Store not found"}, 400)    
+                
 
 class Listings(Resource):
     
