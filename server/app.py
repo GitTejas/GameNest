@@ -166,11 +166,32 @@ class ListingsById(Resource):
         return make_response(listings.to_dict(rules=("-game", "-store")), 200)
 
     def patch(self, id):
-        pass
+        json = request.get_json()
+        listing = Listing.query.filter(Listing.id == id).first()
+        if listing:
+            try:
+                setattr(listing, "condition", json['condition'])
+                setattr(listing, "stock", json['stock'])
+                setattr(listing, "price", json['price'])
+                setattr(listing, "game_id", json['game_id'])
+                setattr(listing, "store_id", json['store_id'])
+                db.session.add(listing)
+                db.session.commit()
+                return make_response(listing.to_dict(rules=("-game", "-store")), 202)
+            except ValueError:
+                return make_response({'errors': ["validation errors"]}, 400)
+        else:
+            return make_response({ "error": "Store not found"}, 400) 
 
     def delete(self, id):
-        pass
+        listing = Listing.query.filter(Listing.id == id).first()
 
+        if listing:
+            db.session.delete(listing)
+            db.session.commit()
+            return {}, 204
+        else:
+            return {'error': 'Listing not found'}, 404
 
 api.add_resource(Games, "/games")
 api.add_resource(GamesById, "/games/<int:id>")
