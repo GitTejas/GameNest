@@ -19,14 +19,14 @@ body {
 nav ul {
   list-style-type: none;
   display: flex;
-  justify-content: space-evenly;  /* Changed from space-between to space-evenly */
+  justify-content: space-evenly;
   background-color: #212529;
   padding: 14px;
   border-radius: 8px;
 }
 
 nav ul li {
-  margin: 0 8px;  /* Reduced the margin to bring buttons closer */
+  margin: 0 8px;
 }
 
 nav ul li a {
@@ -41,37 +41,44 @@ nav ul li a:hover {
   text-shadow: 0 0 12px var(--link-hover);
 }
 
-
 h1, h2, h3 {
   text-align: center;
   color: var(--header);
   font-family: 'Roboto', sans-serif;
 }
 
-form input, form button {
+/* Form Section */
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 20px;
+  background-color: var(--card-bg);
+  border-radius: 8px;
+  width: 90%;
+  max-width: 500px;
+  margin: 20px auto;
+}
+
+form input, form button, form select {
   display: block;
-  margin: 16px auto;
   padding: 16px;
-  width: 80%;
-  max-width: 460px;
+  width: 100%;
   border-radius: 8px;
   border: 2px solid var(--form-border);
   background-color: var(--form-bg);
-  color: rgb(255, 255, 255);
+  color: #ffffff;
   transition: box-shadow 0.3s ease, transform 0.3s ease, background-color 0.3s ease;
 }
 
-form input:focus, form button:hover {
+form input:focus, form select:focus, form button:hover {
   background-color: var(--form-hover);
   box-shadow: 0 0 10px rgba(243, 156, 18, 0.6);
   transform: scale(1.05);
 }
 
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
+/* Listings Card Style */
 ul li {
   margin: 14px 0;
   padding: 18px;
@@ -80,6 +87,9 @@ ul li {
   border-radius: 10px;
   box-shadow: 0 5px 8px rgba(0, 0, 0, 0.3);
   transition: transform 0.3s ease, box-shadow 0.3s;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 ul li:hover {
@@ -87,7 +97,97 @@ ul li:hover {
   box-shadow: 0 8px 12px rgba(0, 0, 0, 0.4);
 }
 
+/* Game Title and Store Name Styling */
+ul li .listing-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--header);
+}
 
+ul li .listing-store {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--link);
+}
+
+/* Additional Info Styling */
+ul li .listing-details {
+  font-size: 0.9rem;
+  color: var(--text);
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap; /* Adjust for smaller screens */
+  gap: 4px;
+}
+
+ul li .listing-details span {
+  margin-right: 10px; /* Add spacing between details */
+}
+
+ul li .listing-details span:last-child {
+  font-style: italic; /* Different style for 'Listed on' */
+  color: var(--muted-text); /* Lighter color for date */
+}
+
+/* Edit and Delete Button Styling */
+ul li button {
+  margin-top: 10px;
+  padding: 8px 12px;
+  background-color: #f39c12;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+ul li button:hover {
+  background-color: var(--link-hover);
+  transform: scale(1.05);
+}
+
+/* Spacing for structured layout */
+ul li .buttons {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+
+/* Additional Info Styling */
+ul li .listing-details {
+  font-size: 0.9rem;
+  color: var(--text);
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Two-column layout */
+  gap: 8px 20px; /* Spacing between columns and rows */
+  align-items: center;
+}
+
+ul li .listing-details .price-condition,
+ul li .listing-details .stock-date {
+  display: flex;
+  justify-content: space-between;
+}
+
+ul li .listing-details .price {
+  font-weight: bold;
+  color: var(--price-color); /* Make price stand out */
+}
+
+ul li .listing-details .condition {
+  color: var(--highlight); /* Different color for condition */
+}
+
+ul li .listing-details .stock {
+  font-weight: 500;
+  color: var(--text); /* Regular color for stock */
+}
+
+ul li .listing-details .date {
+  font-style: italic;
+  color: var(--muted-text); /* Muted color for listed date */
+}
 
 /* :root {
   --bg: #282c34;
