@@ -44,20 +44,23 @@ class Game(db.Model, SerializerMixin):
 
     @validates("console")
     def validates_console(self, key, console):
-        # List of valid consoles
-        valid_consoles = {"PlayStation", "Xbox", "PC", "Nintendo Switch"}        
+        # List of valid consoles (converted to lowercase for case-insensitivity)
+        valid_consoles = {"playstation", "xbox", "pc", "nintendo switch"} 
+
+        # Convert console input to lowercase for comparison
         if isinstance(console, str):
-            if console in valid_consoles:
-                return console
+            if console.lower() in valid_consoles:
+                return console  # You may return the original value or formatted as title case if preferred
             else:
                 raise ValueError("Console must be PlayStation, Xbox, PC, or Nintendo Switch")
         elif isinstance(console, (list, set)):
-            if all(c in valid_consoles for c in console):
+            if all(c.lower() in valid_consoles for c in console):
                 return console
             else:
                 raise ValueError("Each console must be one of PlayStation, Xbox, PC, or Nintendo Switch")
         else:
             raise ValueError("Console must be a string or a list of valid console names")
+
 
     @validates("genre")
     def validates_genre(self, key, genre):
@@ -113,13 +116,16 @@ class Store(db.Model, SerializerMixin):
             return location
         else:
             raise ValueError("Location must contain both letters and numbers.")
-
+    
     @validates("hours")
     def validates_hours(self, key, hours):
+        # Normalize input by removing any spaces
+        hours = hours.replace(" ", "")
+
         # Ensure the hours string is in the correct format
         try:
-            # Split the hours string by " - "
-            start_time, end_time = hours.split(" - ")
+            # Split the hours string by "-"
+            start_time, end_time = hours.split("-")
 
             # Extract the hour part (before the ":")
             start_hour = int(start_time.split(":")[0])
@@ -135,6 +141,7 @@ class Store(db.Model, SerializerMixin):
 
         # Return the hours if valid
         return hours
+
 
     def __repr__(self):
         return f'<Store {self.id}: {self.name}>'
