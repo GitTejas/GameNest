@@ -48,7 +48,7 @@ Store ↔️ Listing: One-to-Many relationship where a store can have multiple l
 
 Game ↔️ Listing: One-to-Many relationship where a video game can have multiple listings across different stores.
 
-Store ↔️ Gane: Many-to-Many relationship managed through the Listing model as the association table, allowing for video games to be listed at multiple stores.
+Store ↔️ Game: Many-to-Many relationship managed through the Listing model as the association table, allowing for video games to be listed at multiple stores.
 
 ## Database Integrity
 
@@ -69,6 +69,7 @@ Formik is utilized for handling form submissions, and Yup is employed for schema
 ## Setup
 
 run:
+
 -backend-
 
 pipenv install
