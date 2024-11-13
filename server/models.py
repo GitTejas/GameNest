@@ -1,14 +1,10 @@
 from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm import validates
-
-from sqlalchemy import func  # Import for current timestamp
-
-# from datetime import datetime, date
-
+from sqlalchemy import func
 from config import db
 
-# Models go here!
+
 class Game(db.Model, SerializerMixin):
     __tablename__ = "games"
 
@@ -20,15 +16,13 @@ class Game(db.Model, SerializerMixin):
     genre = db.Column(db.String)
     image = db.Column(db.String)
 
-    #Add relationship
+
     listings = db.relationship("Listing", back_populates="game", cascade="all, delete-orphan")
 
-    
-    #Serialize Rules
+
     serialize_rules = ("-listings.game",)
 
-    
-    #Validations
+
     @validates("title")
     def validates_title(self, key, title):
         if isinstance(title, str) and 1 < len(title) < 60:
@@ -47,13 +41,10 @@ class Game(db.Model, SerializerMixin):
 
     @validates("console")
     def validates_console(self, key, console):
-        # List of valid consoles (converted to lowercase for case-insensitivity)
         valid_consoles = {"playstation", "xbox", "pc", "nintendo switch"} 
-
-        # Convert console input to lowercase for comparison
         if isinstance(console, str):
             if console.lower() in valid_consoles:
-                return console  # You may return the original value or formatted as title case if preferred
+                return console
             else:
                 raise ValueError("Console must be PlayStation, Xbox, PC, or Nintendo Switch")
         elif isinstance(console, (list, set)):
@@ -92,15 +83,11 @@ class Store(db.Model, SerializerMixin):
     hours = db.Column(db.String)
 
 
-    #Add relationship
     listings = db.relationship("Listing", back_populates="store", cascade="all, delete-orphan")
 
-    
-    #Serialize Rules
     serialize_rules = ("-listings.store",)
 
     
-    #Validations
     @validates("name")
     def validates_name(self, key, name):
         if isinstance(name, str) and 1 < len(name) < 40:
@@ -124,7 +111,6 @@ class Store(db.Model, SerializerMixin):
     def validates_hours(self, key, hours):
         # Normalize input by removing any spaces
         hours = hours.replace(" ", "")
-
         # Ensure the hours string is in the correct format
         try:
             # Split the hours string by "-"
@@ -137,12 +123,8 @@ class Store(db.Model, SerializerMixin):
             # Check if both start and end hours are valid
             if not (0 <= start_hour <= 23 and 0 <= end_hour <= 23):
                 raise ValueError('Hours must be between 0 and 23.')
-
         except (ValueError, IndexError):
-            # Catch any issues with parsing or invalid time ranges
             raise ValueError('Hours must be in the format "X:00 - Y:00" with valid hours between 0 and 23.')
-
-        # Return the hours if valid
         return hours
 
 
@@ -163,19 +145,16 @@ class Listing(db.Model, SerializerMixin):
     game_id = db.Column(db.Integer, db.ForeignKey("games.id"))
     store_id = db.Column(db.Integer, db.ForeignKey("stores.id"))
 
-    #Add relationship
+
     game = db.relationship("Game", back_populates="listings")
     store = db.relationship("Store", back_populates="listings")
 
     
-    #Serialize Rules
     serialize_rules = ("-game.listings", "-store.listings")
 
     
-    #Validations
     @validates("price")
     def validates_price(self, key, price):
-        # Ensure price is a positive number (float or int)
         if isinstance(price, (float, int)) and price >= 0:
             return price
         else:
@@ -183,7 +162,6 @@ class Listing(db.Model, SerializerMixin):
 
     @validates("stock")
     def validates_stock(self, key, stock):
-        # Ensure stock is an integer and within the valid range (0 to 100)
         if isinstance(stock, int) and 0 <= stock <= 100:
             return stock
         else:
@@ -191,7 +169,6 @@ class Listing(db.Model, SerializerMixin):
 
     @validates("condition")
     def validates_condition(self, key, condition):
-        # Convert condition to title case to handle case insensitivity
         condition = condition.strip().title()
 
         if condition in ("New", "Used"):
@@ -201,19 +178,16 @@ class Listing(db.Model, SerializerMixin):
 
     @validates("game_id", "store_id")
     def validates_foreign_key(self, key, id):
-        # Validate game_id
         if key == "game_id":
             if isinstance(id, int) and id > 0:
                 return id
             else:
                 raise ValueError("game_id must be a positive integer")
-        # Validate store_id
         if key == "store_id":
             if isinstance(id, int) and id > 0:
                 return id
             else:
                 raise ValueError("store_id must be a positive integer")
-        # Default case (shouldn't happen with valid keys)
         raise ValueError(f"{key} is invalid")
 
     def __repr__(self):
