@@ -1,8 +1,8 @@
-"""models and attributes added
+"""migration
 
-Revision ID: 9a2134a92b3f
+Revision ID: 1c2a6693cee6
 Revises: 
-Create Date: 2024-11-09 12:28:44.002302
+Create Date: 2024-11-12 20:39:07.649050
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '9a2134a92b3f'
+revision = '1c2a6693cee6'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -23,8 +23,8 @@ def upgrade():
     sa.Column('title', sa.String(), nullable=False),
     sa.Column('rating', sa.String(), nullable=True),
     sa.Column('console', sa.String(), nullable=True),
-    sa.Column('image', sa.String(), nullable=True),
     sa.Column('genre', sa.String(), nullable=True),
+    sa.Column('image', sa.String(), nullable=True),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('title')
     )
@@ -39,7 +39,7 @@ def upgrade():
     op.create_table('listings',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('price', sa.Float(), nullable=True),
-    sa.Column('stock', sa.String(), nullable=False),
+    sa.Column('stock', sa.Integer(), nullable=False),
     sa.Column('condition', sa.String(), nullable=True),
     sa.Column('game_id', sa.Integer(), nullable=True),
     sa.Column('store_id', sa.Integer(), nullable=True),

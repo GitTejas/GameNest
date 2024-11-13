@@ -1,6 +1,9 @@
 from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm import validates
+
+# from sqlalchemy import func  # Import for current timestamp
+
 # from datetime import datetime, date
 
 from config import db
@@ -155,6 +158,8 @@ class Listing(db.Model, SerializerMixin):
     stock = db.Column(db.Integer, nullable=False)
     condition = db.Column(db.String)
 
+    # created_at = db.Column(db.DateTime, default=func.now(), nullable=False)
+
     game_id = db.Column(db.Integer, db.ForeignKey("games.id"))
     store_id = db.Column(db.Integer, db.ForeignKey("stores.id"))
 
@@ -210,13 +215,6 @@ class Listing(db.Model, SerializerMixin):
                 raise ValueError("store_id must be a positive integer")
         # Default case (shouldn't happen with valid keys)
         raise ValueError(f"{key} is invalid")
-
-    # @validates("game_id", "store_id")
-    # def validates_foreign_key(self, key, id):
-    #     if isinstance(id, int) and id > 0:
-    #         return id
-    #     else:
-    #         raise ValueError(f'{key} must be a positive integer')    
 
     def __repr__(self):
         return f'<Listing {self.id}>'
