@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef  } from 'react';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 
@@ -6,6 +6,8 @@ function GameManager() {
     const [games, setGames] = useState([]);
     const [isEditing, setIsEditing] = useState(false);
     const [currentGame, setCurrentGame] = useState(null);
+    const formRef = useRef(null);  // Create a ref for the form container
+
 
     useEffect(() => {
         fetch("/games")
@@ -42,10 +44,8 @@ function GameManager() {
             .url('Invalid URL')
             .required('Image URL is required'),
     });
-    
 
     // Handle form submission
-// Handle form submission without async/await
 const handleSubmit = (values, { resetForm, setSubmitting }) => {
     const method = isEditing ? 'PATCH' : 'POST';
     const url = isEditing ? `/games/${currentGame.id}` : '/games';
@@ -80,6 +80,10 @@ const handleSubmit = (values, { resetForm, setSubmitting }) => {
     const editGame = (game) => {
         setIsEditing(true);
         setCurrentGame(game);
+        if (formRef.current) {
+            // Scroll to the form container when "Edit" button is clicked
+            formRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
     };
 
     const deleteGame = (id) => {
@@ -91,6 +95,7 @@ const handleSubmit = (values, { resetForm, setSubmitting }) => {
     return (
         <div>
             <h2>Game Form</h2>
+            <div ref={formRef}>  {/* Add ref to form container */}
             <Formik
                 initialValues={{
                     title: currentGame?.title || '',
@@ -131,26 +136,29 @@ const handleSubmit = (values, { resetForm, setSubmitting }) => {
                     </Form>
                 )}
             </Formik>
+            </div>
 
             <h2>Game List</h2>
             <ul>
-                {games.map((game) => (
-                    <li key={game.id}>
-                        <h3>{game.title}</h3>
-                        {game.image && (
-                            <img
-                                src={game.image}
-                                alt={`${game.title} cover`}
-                                style={{ width: "100px", height: "auto" }}
-                            />
-                        )}
-                        <p>Console: {game.console}</p>
-                        <p>Rating: {game.rating}</p>
-                        <p>Genre: {game.genre}</p>
-                        <button onClick={() => editGame(game)}>Edit</button>
-                        <button onClick={() => deleteGame(game.id)}>Delete</button>
-                    </li>
-                ))}
+            {games.map((game) => (
+                <li key={game.id}>
+                <h3>{game.title}</h3>
+                {game.image && (
+                    <img
+                    src={game.image}
+                    alt={`${game.title} cover`}
+                    style={{ width: "100px", height: "auto" }}
+                    />
+                )}
+                <p>Console: {game.console}</p>
+                <p>Rating: {game.rating}</p>
+                <p>Genre: {game.genre}</p>
+                <div className="button-group">
+                    <button onClick={() => editGame(game)}>Edit</button>
+                    <button onClick={() => deleteGame(game.id)}>Delete</button>
+                </div>
+                </li>
+            ))}
             </ul>
         </div>
     );

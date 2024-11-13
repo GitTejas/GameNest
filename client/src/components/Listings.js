@@ -366,8 +366,14 @@ function Listings() {
       game_id: listing.game_id || '',
       store_id: listing.store_id || '',
     });
+  
+    // Scroll to the form after setting the values for editing
+    window.scrollTo({
+      top: document.getElementById('form-container').offsetTop, // Scroll to the form section
+      behavior: 'smooth', // Smooth scroll
+    });
   };
-
+  
   const handleDelete = (id) => {
     fetch(`/listings/${id}`, {
       method: 'DELETE',
@@ -402,7 +408,7 @@ function Listings() {
         <button onClick={() => setPriceFilter('over30')}>Over $30</button>
       </div>
 
-      <form onSubmit={formik.handleSubmit}>
+      <form onSubmit={formik.handleSubmit} id="form-container">
         <input
           type="text"
           name="condition"

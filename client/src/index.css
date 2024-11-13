@@ -7,7 +7,7 @@
   --card-bg: #343a40;
   --form-bg: #495057;
   --form-border: #f39c12;
-  --form-hover: #f1c40f;
+  --form-hover: #000000;
 }
 
 body {
@@ -129,29 +129,6 @@ ul li .listing-details span:last-child {
   color: var(--muted-text); /* Lighter color for date */
 }
 
-/* Edit and Delete Button Styling */
-ul li button {
-  margin-top: 10px;
-  padding: 8px 12px;
-  background-color: #f39c12;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.3s ease;
-}
-
-ul li button:hover {
-  background-color: var(--link-hover);
-  transform: scale(1.05);
-}
-
-/* Spacing for structured layout */
-ul li .buttons {
-  display: flex;
-  gap: 8px;
-  justify-content: flex-end;
-}
 
 
 /* Additional Info Styling */
@@ -188,6 +165,58 @@ ul li .listing-details .date {
   font-style: italic;
   color: var(--muted-text); /* Muted color for listed date */
 }
+
+/* Button Styling */
+ul li button {
+  padding: 6px 10px; /* Smaller padding for a compact size */
+  background-color: #d89c10; /* Subtle, muted gold */
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.85rem; /* Slightly smaller font */
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  margin: 5px 4px; /* Small margin for spacing between buttons */
+}
+
+/* Spacing for structured layout */
+ul li .buttons {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+ul li button:hover {
+  background-color: #c5850e; /* Darker gold on hover */
+  transform: translateY(-2px); /* Subtle lift effect */
+}
+
+/* Button Container to Align Buttons */
+ul li .button-group {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-start; /* Align buttons to the left */
+  margin-top: 8px; /* Space between buttons and other content */
+}
+
+/* Image Styling */
+ul li img {
+  border-radius: 6px;
+  margin-top: 8px;
+}
+
+/* Game Title and Text Styling */
+ul li h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--header);
+}
+
+ul li p {
+  font-size: 0.9rem;
+  color: var(--text);
+}
+
 
 /* :root {
   --bg: #282c34;
