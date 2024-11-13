@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef  } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 
@@ -6,8 +6,8 @@ function GameManager() {
     const [games, setGames] = useState([]);
     const [isEditing, setIsEditing] = useState(false);
     const [currentGame, setCurrentGame] = useState(null);
-    const formRef = useRef(null);  // Create a ref for the form container
-
+    const [sortBy, setSortBy] = useState(""); // New state to manage sorting
+    const formRef = useRef(null);
 
     useEffect(() => {
         fetch("/games")
@@ -15,6 +15,20 @@ function GameManager() {
             .then(data => setGames(data))
             .catch(error => console.error("Error fetching games:", error));
     }, []);
+
+    // Handle sorting based on sortBy value
+    const sortedGames = [...games].sort((a, b) => {
+        if (sortBy === "title") {
+            return a.title.localeCompare(b.title);  // Alphabetical sorting by title
+        } else if (sortBy === "rating") {
+            return a.rating.localeCompare(b.rating);  // Sorting by rating
+        } else if (sortBy === "console") {
+            return a.console.localeCompare(b.console);  // Sorting by console
+        } else if (sortBy === "genre") {
+            return a.genre.localeCompare(b.genre);  // Sorting by genre
+        }
+        return 0;  // No sorting if no option selected
+    });
 
     // Validation schema
     const validationSchema = Yup.object({
@@ -33,7 +47,7 @@ function GameManager() {
         
         console: Yup.string()
         .required('Console is required')
-        .transform(value => value ? value.toLowerCase() : value) // Transform to lowercase
+        .transform(value => value ? value.toLowerCase() : value)
         .oneOf(['playstation', 'xbox', 'pc', 'nintendo switch'], 'Console must be either PlayStation, Xbox, PC, or Nintendo Switch'),
         
         genre: Yup.string()
@@ -46,37 +60,38 @@ function GameManager() {
     });
 
     // Handle form submission
-const handleSubmit = (values, { resetForm, setSubmitting }) => {
-    const method = isEditing ? 'PATCH' : 'POST';
-    const url = isEditing ? `/games/${currentGame.id}` : '/games';
+    const handleSubmit = (values, { resetForm, setSubmitting }) => {
+        const method = isEditing ? 'PATCH' : 'POST';
+        const url = isEditing ? `/games/${currentGame.id}` : '/games';
 
-    fetch(url, {
-        method,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(values),
-    })
-        .then((response) => {
-            if (!response.ok) {
-                throw new Error("Server validation failed");
-            }
-            return response.json();
+        fetch(url, {
+            method,
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(values),
         })
-        .then((addedGame) => {
-            setGames((prevGames) =>
-                isEditing
-                    ? prevGames.map((game) =>
-                        game.id === addedGame.id ? addedGame : game
-                    )
-                    : [...prevGames, addedGame]
-            );
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error("Server validation failed");
+                }
+                return response.json();
+            })
+            .then((addedGame) => {
+                setGames((prevGames) =>
+                    isEditing
+                        ? prevGames.map((game) =>
+                            game.id === addedGame.id ? addedGame : game
+                        )
+                        : [...prevGames, addedGame]
+                );
 
-            resetForm();
-            setIsEditing(false);
-            setCurrentGame(null);
-        })
-        .catch((error) => console.error('Error adding or updating game:', error))
-        .finally(() => setSubmitting(false));
-};
+                resetForm();
+                setIsEditing(false);
+                setCurrentGame(null);
+            })
+            .catch((error) => console.error('Error adding or updating game:', error))
+            .finally(() => setSubmitting(false));
+    };
+
     const editGame = (game) => {
         setIsEditing(true);
         setCurrentGame(game);
@@ -95,70 +110,79 @@ const handleSubmit = (values, { resetForm, setSubmitting }) => {
     return (
         <div>
             <h2>Game Form</h2>
-            <div ref={formRef}>  {/* Add ref to form container */}
-            <Formik
-                initialValues={{
-                    title: currentGame?.title || '',
-                    rating: currentGame?.rating || '',
-                    console: currentGame?.console || '',
-                    genre: currentGame?.genre || '',
-                    image: currentGame?.image || '',
-                }}
-                enableReinitialize={true}
-                validationSchema={validationSchema}
-                onSubmit={handleSubmit}
-            >
-                {({ isValid, isSubmitting, touched }) => (
-                    <Form>
-                        <div>
-                            <Field type="text" name="title" placeholder="Title" />
-                            <ErrorMessage name="title" component="div" style={{ color: 'red' }} />
-                        </div>
-                        <div>
-                            <Field type="text" name="rating" placeholder="Rating" />
-                            <ErrorMessage name="rating" component="div" style={{ color: 'red' }} />
-                        </div>
-                        <div>
-                            <Field type="text" name="console" placeholder="Console" />
-                            <ErrorMessage name="console" component="div" style={{ color: 'red' }} />
-                        </div>
-                        <div>
-                            <Field type="text" name="genre" placeholder="Genre" />
-                            <ErrorMessage name="genre" component="div" style={{ color: 'red' }} />
-                        </div>
-                        <div>
-                            <Field type="text" name="image" placeholder="Image URL" />
-                            <ErrorMessage name="image" component="div" style={{ color: 'red' }} />
-                        </div>
-                        <button type="submit" disabled={!isValid || isSubmitting || Object.keys(touched).length === 0}>
-                            {isEditing ? 'Update Game' : 'Add Game'}
-                        </button>
-                    </Form>
-                )}
-            </Formik>
+            <div ref={formRef}>
+                <Formik
+                    initialValues={{
+                        title: currentGame?.title || '',
+                        rating: currentGame?.rating || '',
+                        console: currentGame?.console || '',
+                        genre: currentGame?.genre || '',
+                        image: currentGame?.image || '',
+                    }}
+                    enableReinitialize={true}
+                    validationSchema={validationSchema}
+                    onSubmit={handleSubmit}
+                >
+                    {({ isValid, isSubmitting, touched }) => (
+                        <Form>
+                            <div>
+                                <Field type="text" name="title" placeholder="Title" />
+                                <ErrorMessage name="title" component="div" style={{ color: 'red' }} />
+                            </div>
+                            <div>
+                                <Field type="text" name="rating" placeholder="Rating" />
+                                <ErrorMessage name="rating" component="div" style={{ color: 'red' }} />
+                            </div>
+                            <div>
+                                <Field type="text" name="console" placeholder="Console" />
+                                <ErrorMessage name="console" component="div" style={{ color: 'red' }} />
+                            </div>
+                            <div>
+                                <Field type="text" name="genre" placeholder="Genre" />
+                                <ErrorMessage name="genre" component="div" style={{ color: 'red' }} />
+                            </div>
+                            <div>
+                                <Field type="text" name="image" placeholder="Image URL" />
+                                <ErrorMessage name="image" component="div" style={{ color: 'red' }} />
+                            </div>
+                            <button type="submit" disabled={!isValid || isSubmitting || Object.keys(touched).length === 0}>
+                                {isEditing ? 'Update Game' : 'Add Game'}
+                            </button>
+                        </Form>
+                    )}
+                </Formik>
             </div>
+
+            <label>Sort By: </label>
+            <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+                <option value="">Select</option>
+                <option value="title">Title (A-Z)</option>
+                <option value="rating">Rating</option>
+                <option value="console">Console</option>
+                <option value="genre">Genre</option>
+            </select>
 
             <h2>Game List</h2>
             <ul>
-            {games.map((game) => (
-                <li key={game.id}>
-                <h3>{game.title}</h3>
-                {game.image && (
-                    <img
-                    src={game.image}
-                    alt={`${game.title} cover`}
-                    style={{ width: "100px", height: "auto" }}
-                    />
-                )}
-                <p>Console: {game.console}</p>
-                <p>Rating: {game.rating}</p>
-                <p>Genre: {game.genre}</p>
-                <div className="button-group">
-                    <button onClick={() => editGame(game)}>Edit</button>
-                    <button onClick={() => deleteGame(game.id)}>Delete</button>
-                </div>
-                </li>
-            ))}
+                {sortedGames.map((game) => (
+                    <li key={game.id}>
+                        <h3>{game.title}</h3>
+                        {game.image && (
+                            <img
+                                src={game.image}
+                                alt={`${game.title} cover`}
+                                style={{ width: "100px", height: "auto" }}
+                            />
+                        )}
+                        <p>Console: {game.console}</p>
+                        <p>Rating: {game.rating}</p>
+                        <p>Genre: {game.genre}</p>
+                        <div className="button-group">
+                            <button onClick={() => editGame(game)}>Edit</button>
+                            <button onClick={() => deleteGame(game.id)}>Delete</button>
+                        </div>
+                    </li>
+                ))}
             </ul>
         </div>
     );
