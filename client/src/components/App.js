@@ -5,9 +5,6 @@ import Navbar from "./NavBar";
 import Stores from "./Stores";
 import Listings from "./Listings";
 
-import GameList from "./GamesList";
-import GameForm from './GameForm';
-
 function App() {
   return (
     <Router>
@@ -16,7 +13,6 @@ function App() {
         <h1>GameNest</h1>
         <Routes>
           <Route path="/" element={<GameManager />} />
-          {/* <Route path="/games" element={<GameForm />} /> */}
           <Route path="stores" element={<Stores />} />
           <Route path="listings" element={<Listings />} />
         </Routes>

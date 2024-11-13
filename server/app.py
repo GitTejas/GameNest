@@ -149,6 +149,7 @@ class Listings(Resource):
             new_listing = Listing(
                 condition=json['condition'],
                 stock=json['stock'],
+                # created_at = json['created_at'],
                 price=json['price'],
                 game=game,  # Associate the game object
                 store=store  # Associate the store object

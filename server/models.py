@@ -2,7 +2,7 @@ from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm import validates
 
-# from sqlalchemy import func  # Import for current timestamp
+from sqlalchemy import func  # Import for current timestamp
 
 # from datetime import datetime, date
 
@@ -158,7 +158,7 @@ class Listing(db.Model, SerializerMixin):
     stock = db.Column(db.Integer, nullable=False)
     condition = db.Column(db.String)
 
-    # created_at = db.Column(db.DateTime, default=func.now(), nullable=False)
+    created_at = db.Column(db.DateTime, default=func.now(), nullable=False)
 
     game_id = db.Column(db.Integer, db.ForeignKey("games.id"))
     store_id = db.Column(db.Integer, db.ForeignKey("stores.id"))

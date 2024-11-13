@@ -2,6 +2,7 @@
 
 # Standard library imports
 from random import randint, choice as rc
+from datetime import datetime, timedelta
 
 # Remote library imports
 from faker import Faker
@@ -89,15 +90,36 @@ if __name__ == '__main__':
 
         db.session.commit()
 
-        # Seed Listings
+        # # Seed Listings
+        # print("Seeding Listings...")
+        # for _ in range(20):
+        #     listing = Listing(
+        #         price=round(randint(5, 60) + randint(0, 99) / 100, 2),
+        #         stock=randint(0, 100),
+        #         condition=rc(["New", "Used"]),
+        #         game_id=rc([game.id for game in Game.query.all()]),
+        #         store_id=rc([store.id for store in Store.query.all()])
+        #     )
+        #     db.session.add(listing)
+
+        # # Commit the listings
+        # db.session.commit()
+
+        # print("Seeding complete!")
+
+                # Seed Listings
+                
         print("Seeding Listings...")
         for _ in range(20):
+            # Generate random created_at time within the last 30 days
+            created_at = fake.date_this_month(before_today=True, after_today=False)
             listing = Listing(
                 price=round(randint(5, 60) + randint(0, 99) / 100, 2),
                 stock=randint(0, 100),
                 condition=rc(["New", "Used"]),
                 game_id=rc([game.id for game in Game.query.all()]),
-                store_id=rc([store.id for store in Store.query.all()])
+                store_id=rc([store.id for store in Store.query.all()]),
+                created_at=created_at  # Assign the random created_at
             )
             db.session.add(listing)
 

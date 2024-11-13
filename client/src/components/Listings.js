@@ -18,19 +18,21 @@ function Listings() {
 
   // Filter and sort listings
   const filteredAndSortedListings = [...listings]
-    .filter((listing) => {
-      if (priceFilter === 'under30') return listing.price < 30;
-      if (priceFilter === 'over30') return listing.price >= 30;
-      return true;
-    })
-    .sort((a, b) => {
-      if (sortCriterion === 'game') {
-        return (a.game?.title || '').localeCompare(b.game?.title || '');
-      } else if (sortCriterion === 'store') {
-        return (a.store?.name || '').localeCompare(b.store?.name || '');
-      }
-      return 0;
-    });
+  .filter((listing) => {
+    if (priceFilter === 'under30') return listing.price < 30;
+    if (priceFilter === 'over30') return listing.price >= 30;
+    return true;
+  })
+  .sort((a, b) => {
+    if (sortCriterion === 'game') {
+      return (a.game?.title || '').localeCompare(b.game?.title || '');
+    } else if (sortCriterion === 'store') {
+      return (a.store?.name || '').localeCompare(b.store?.name || '');
+    } else if (sortCriterion === 'latest') {  // New sorting option
+      return new Date(b.created_at) - new Date(a.created_at); // Sort by date descending (latest first)
+    }
+    return 0;
+  });
 
   // Formik validation schema using Yup
   const validationSchema = Yup.object({
@@ -143,6 +145,7 @@ function Listings() {
         <option value="">Select</option>
         <option value="game">Game Title (A-Z)</option>
         <option value="store">Store Name (A-Z)</option>
+        <option value="latest">Latest Date Added</option>
       </select>
       <br>
       </br>
@@ -217,6 +220,7 @@ function Listings() {
             <p>Stock: {listing.stock}</p>
             <p>Price: ${listing.price}</p>
             <p>Store: {listing.store ? listing.store.name : 'No Store Available'}</p>
+            <p>Created At: {listing.created_at}</p>
             <button onClick={() => handleEdit(listing)}>Edit</button>
             <button onClick={() => handleDelete(listing.id)}>Delete</button>
           </li>
