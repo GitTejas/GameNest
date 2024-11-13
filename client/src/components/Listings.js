@@ -34,11 +34,33 @@ function Listings() {
 
   // Formik validation schema using Yup
   const validationSchema = Yup.object({
-    condition: Yup.string().required('Condition is required'),
-    stock: Yup.number().required('Stock is required').min(0, 'Stock cannot be negative'),
-    price: Yup.number().required('Price is required').min(0, 'Price cannot be negative'),
-    game_id: Yup.string().required('Game ID is required'),
-    store_id: Yup.string().required('Store ID is required'),
+    condition: Yup.string()
+      .required('Condition is required')
+      .test(
+        'is-valid-condition',
+        'Condition must be either "New" or "Used"',
+        value => ['new', 'used'].includes(value?.toLowerCase())
+      ),
+  
+    stock: Yup.number()
+      .required('Stock is required')
+      .min(0, 'Stock cannot be negative')
+      .max(100, 'Stock must be between 0 and 100'),
+  
+    price: Yup.number()
+      .required('Price is required')
+      .positive('Price must be a positive number')
+      .min(0.01, 'Price must be greater than 0'), // Prevents zero from being accepted
+  
+    game_id: Yup.number()
+      .required('Game ID is required')
+      .positive('Game ID must be a positive number')
+      .integer('Game ID must be an integer'), // To ensure it's a whole number
+  
+    store_id: Yup.number()
+      .required('Store ID is required')
+      .positive('Store ID must be a positive number')
+      .integer('Store ID must be an integer'), // Ensuring it's a whole number
   });
 
   const formik = useFormik({
