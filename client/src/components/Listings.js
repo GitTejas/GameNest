@@ -131,8 +131,8 @@ function Listings() {
   
     // Scroll to the form after setting the values for editing
     window.scrollTo({
-      top: document.getElementById('form-container').offsetTop, // Scroll to the form section
-      behavior: 'smooth', // Smooth scroll
+      top: document.getElementById('form-container').offsetTop, 
+      behavior: 'smooth', 
     });
   };
   

@@ -19,13 +19,13 @@ function GameManager() {
     // Handle sorting based on sortBy value
     const sortedGames = [...games].sort((a, b) => {
         if (sortBy === "title") {
-            return a.title.localeCompare(b.title);  // Alphabetical sorting by title
+            return a.title.localeCompare(b.title);  
         } else if (sortBy === "rating") {
-            return a.rating.localeCompare(b.rating);  // Sorting by rating
+            return a.rating.localeCompare(b.rating); 
         } else if (sortBy === "console") {
-            return a.console.localeCompare(b.console);  // Sorting by console
+            return a.console.localeCompare(b.console);  
         } else if (sortBy === "genre") {
-            return a.genre.localeCompare(b.genre);  // Sorting by genre
+            return a.genre.localeCompare(b.genre); 
         }
         return 0;  // No sorting if no option selected
     });

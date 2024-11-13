@@ -68,10 +68,15 @@ Formik is utilized for handling form submissions, and Yup is employed for schema
 
 run:
 -backend-
+
 pipenv install
+
 pipenv shell
+
 cd server directory
+
 python seed.py
+
 python app.py
 
 -front-end-

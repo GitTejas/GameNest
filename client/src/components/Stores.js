@@ -29,7 +29,6 @@ function Stores() {
 
     const handleSubmit = async (values, { resetForm, setSubmitting }) => {
         try {
-            // Extra check to ensure no data posts on validation error
             const isValid = await validationSchema.isValid(values);
             if (!isValid) return;
 
