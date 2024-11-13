@@ -16,11 +16,9 @@ if __name__ == '__main__':
     with app.app_context():
         print("Starting seed...")
 
-        # Clear existing data
         db.drop_all()
         db.create_all()
 
-        # Predefined list of game titles and images
         predefined_games = [
             {"title": "Mega Man", "image": "https://upload.wikimedia.org/wikipedia/en/b/bf/Mega_Man_X4_PSX.jpg"},
             {"title": "Donkey Kong", "image": "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcSuZ4WZ1W_-MfVFcVHuiXseEXJ5YeW5yQAdEb7BQ4thjhQRqp3FTDo4m8T7wXmodDkYDssk"},
@@ -49,18 +47,6 @@ if __name__ == '__main__':
             )
             db.session.add(game)
 
-        # # Add additional random games if needed
-        # print("Seeding additional random Games...")
-        # for _ in range(10 - len(predefined_games)):
-        #     game = Game(
-        #         title=fake.company() + " Game",
-        #         rating=rc(["E", "T", "M"]),
-        #         console=rc(["PlayStation", "Xbox", "PC", "Nintendo Switch"]),
-        #         genre=rc(["Action", "Adventure", "RPG", "Strategy", "Shooter"]),
-        #         image=fake.image_url()
-        #     )
-        #     db.session.add(game)
-
         predefined_stores = [
             {"name": "GameStop", "location": "640 Camino Del Rio N STE 317A, San Diego, CA 92108"},
             {"name": "EB Games", "location": "2612 S Shepherd Dr Houston, TX 77098"},
@@ -78,7 +64,6 @@ if __name__ == '__main__':
             )
             db.session.add(store)
 
-        # Add additional random stores if needed
         print("Seeding additional random Stores...")
         for _ in range(5 - len(predefined_stores)):
             store = Store(
@@ -92,7 +77,6 @@ if __name__ == '__main__':
 
         print("Seeding Listings...")
         for _ in range(20):
-            # Generate random created_at time within the last 30 days
             created_at = fake.date_this_month(before_today=True, after_today=False)
             listing = Listing(
                 price=round(randint(5, 60) + randint(0, 99) / 100, 2),
@@ -100,35 +84,10 @@ if __name__ == '__main__':
                 condition=rc(["New", "Used"]),
                 game_id=rc([game.id for game in Game.query.all()]),
                 store_id=rc([store.id for store in Store.query.all()]),
-                created_at=created_at  # Assign the random created_at
+                created_at=created_at
             )
             db.session.add(listing)
 
-        # Commit the listings
         db.session.commit()
 
         print("Seeding complete!")
-
-
-        # # Seed Listings
-        # print("Seeding Listings...")
-        # for _ in range(20):
-        #     listing = Listing(
-        #         price=round(randint(5, 60) + randint(0, 99) / 100, 2),
-        #         stock=randint(0, 100),
-        #         condition=rc(["New", "Used"]),
-        #         game_id=rc([game.id for game in Game.query.all()]),
-        #         store_id=rc([store.id for store in Store.query.all()])
-        #     )
-        #     db.session.add(listing)
-
-        # # Commit the listings
-        # db.session.commit()
-
-        # print("Seeding complete!")
-
-                # Seed Listings
-
-###################################################################################################
-###################################################################################################
-###################################################################################################
