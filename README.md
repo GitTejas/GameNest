@@ -68,8 +68,6 @@ Formik is utilized for handling form submissions, and Yup is employed for schema
 
 ## Setup
 
-### `server/`
-
 run:
 -backend-
 
