@@ -96,7 +96,6 @@ function GameManager() {
         setIsEditing(true);
         setCurrentGame(game);
         if (formRef.current) {
-            // Scroll to the form container when "Edit" button is clicked
             formRef.current.scrollIntoView({ behavior: 'smooth' });
         }
     };

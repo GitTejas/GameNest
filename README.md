@@ -2,17 +2,6 @@
 
 The Video Game Store Inventory Tracker is a full-stack application designed for video game store owners and managers to efficiently manage their inventory, listings, and associated video games. Built using React for the frontend and Flask with SQLAlchemy for the backend, this app provides an intuitive interface for tracking video game stock, managing listings, and organizing store information.
 
-## Table of Contents
-
-- Features
-- Tech Stack
-- Models
-- Relationships
-- Database Integrity
-- Usage
-- Suggested Future Improvements
-- Contributing
-
 ---
 
 ## Features
