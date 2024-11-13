@@ -23,7 +23,9 @@ Store Management: Create and view stores with their details such as address and 
 
 Listing Management:
 Create listings for available video games at different stores.
+
 Monitor pricing, quantity available, and condition of each listing.
+
 Update listing details and remove listings when necessary.
 
 
@@ -43,7 +45,9 @@ Represents a listing for a video game at a specific store, including attributes 
 
 ## Relationships
 Store ↔️ Listing: One-to-Many relationship where a store can have multiple listings.
+
 Game ↔️ Listing: One-to-Many relationship where a video game can have multiple listings across different stores.
+
 Store ↔️ Gane: Many-to-Many relationship managed through the Listing model as the association table, allowing for video games to be listed at multiple stores.
 
 ## Database Integrity
@@ -80,9 +84,13 @@ python seed.py
 python app.py
 
 -front-end-
+
 open new terminal window
+
 cd client directory
+
 npm install
+
 npm start
 
 ---
