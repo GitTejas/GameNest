@@ -224,11 +224,6 @@ class StoresByName(Resource):
         else:
             return {'error': 'Store not found'}, 404
 
-# class StoresByLocation(Resource):
-#     def get(self, location):
-#         stores = [store.to_dict(rules=("-listings",)) for store in Store.query.filter(Store.location.ilike(f"%{location}%")).all()]
-#         return make_response(stores, 200)
-
 
 api.add_resource(Games, "/games")
 api.add_resource(GamesById, "/games/<int:id>")
@@ -242,7 +237,6 @@ api.add_resource(GamesByGenre, "/games/genre/<string:genre>")
 api.add_resource(GamesByTitle, "/games/title/<string:title>")
 api.add_resource(ListingsByCondition, "/listings/condition/<string:condition>")
 api.add_resource(StoresByName, "/stores/name/<string:name>")
-# api.add_resource(StoresByLocation, "/stores/location/<string:location>")
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
