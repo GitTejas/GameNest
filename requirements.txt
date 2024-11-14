@@ -43,4 +43,4 @@ typing-extensions==4.12.2; python_version >= '3.8'
 wcwidth==0.2.13
 werkzeug==2.2.2; python_version >= '3.7'
 zipp==3.20.2; python_version >= '3.8'
-gunicorn
+gunicorn==20.1.0 
