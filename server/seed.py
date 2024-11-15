@@ -27,13 +27,13 @@ if __name__ == '__main__':
             {"title": "Kingdom Hearts", "image": "https://m.media-amazon.com/images/I/918AUL+i-DL.jpg"},
             {"title": "Nioh II", "image": "https://image.api.playstation.com/vulcan/img/rnd/202011/0423/P7Sm4r3F8krCQcnN5uqwsS00.png"},
             {"title": "Elden Ring", "image": "https://image.api.playstation.com/vulcan/ap/rnd/202110/2000/aGhopp3MHppi7kooGE2Dtt8C.png"},
-            {"title": "Dark Souls 3", "image": "https://static.bandainamcoent.eu/high/dark-souls/dark-souls-3/00-page-setup/ds3_game-thumbnail.jpg"},
+            {"title": "Dark Souls III", "image": "https://static.bandainamcoent.eu/high/dark-souls/dark-souls-3/00-page-setup/ds3_game-thumbnail.jpg"},
             {"title": "Pokemon Fallen Thrones", "image": "https://i.imgur.com/VP0VH7E.png"},
             {"title": "Ninja Gaiden", "image": "https://www.lilithia.net/wp-content/uploads/2021/06/ninjagaidencollection-1576x1182.jpg"},
             {"title": "The Legend of Zelda: Breath of the Wild", "image": "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcSO0-bXLKMPSHQECjZUuy4gbwdgmF-7sfhHQ0b59Q2nv8ZZiBzgHEu5mwDuVLBPf71rkB_zQA"},
             {"title": "Grand Theft Auto V", "image": "https://upload.wikimedia.org/wikipedia/en/a/a5/Grand_Theft_Auto_V.png"},
-            {"title": "Cyberpunk 2077", "image": "https://upload.wikimedia.org/wikipedia/en/9/9f/Cyberpunk_2077_box_art.jpg"},
-            {"title": "The Witcher 3: Wild Hunt", "image": "https://upload.wikimedia.org/wikipedia/en/0/0c/Witcher_3_cover_art.jpg"}
+            {"title": "Cyberpunk", "image": "https://upload.wikimedia.org/wikipedia/en/9/9f/Cyberpunk_2077_box_art.jpg"},
+            {"title": "The Witcher III: Wild Hunt", "image": "https://upload.wikimedia.org/wikipedia/en/0/0c/Witcher_3_cover_art.jpg"}
         ]
 
         print("Seeding Games...")
