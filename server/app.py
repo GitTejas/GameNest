@@ -2,7 +2,7 @@
 
 from flask import request, make_response, abort
 from flask_restful import Resource
-
+from sqlalchemy import func
 from config import app, db, api
 
 from models import Game, Store, Listing
