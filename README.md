@@ -33,11 +33,11 @@ Represents a store with attributes such as name, address, hours of operation, an
 Represents a listing for a video game at a specific store, including attributes for price, quantity available, condition, and associations with the store and video game.
 
 ## Relationships
-Store ↔️ Listing: One-to-Many relationship where a store can have multiple listings.
+Store to Listing: One-to-Many relationship where a store can have multiple listings.
 
-Game ↔️ Listing: One-to-Many relationship where a video game can have multiple listings across different stores.
+Game to Listing: One-to-Many relationship where a video game can have multiple listings across different stores.
 
-Store ↔️ Game: Many-to-Many relationship managed through the Listing model as the association table, allowing for video games to be listed at multiple stores.
+Store to Game: Many-to-Many relationship managed through the Listing model as the association table, allowing for video games to be listed at multiple stores.
 
 ## Database Integrity
 
