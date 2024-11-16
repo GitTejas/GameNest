@@ -1,6 +1,6 @@
 # Game Manager: GameNest
 
-The Video Game Store Inventory Tracker is a full-stack application designed for video game store owners and managers to efficiently manage their inventory, listings, and associated video games. Built using React for the frontend and Flask with SQLAlchemy for the backend, this app provides an intuitive interface for tracking video game stock, managing listings, and organizing store information.
+GameNest is a full-stack application designed for video game store owners and managers to efficiently manage their inventory, listings, and associated video games. Built using React for the frontend and Flask with SQLAlchemy for the backend, this app provides an intuitive interface for tracking video game stock, managing listings, and organizing store information.
 
 ---
 
@@ -19,14 +19,14 @@ Update listing details and remove listings when necessary.
 
 
 ## Tech Stack
-Frontend: React (with React Router for navigation), Formik and Yup (for form handling and validation)
+Frontend: React, Formik and Yup
 Backend: Flask (Flask-RESTful for API endpoints)
-Database: SQLAlchemy (with Flask-SQLAlchemy as the ORM)
+Database: SQLAlchemy
 
 
 ## Models
 1. Game
-Represents a video game with fields like title, genre, platform, and rating.
+Represents a video game with fields like title, genre, console, and rating.
 2. Store
 Represents a store with attributes such as name, address, hours of operation, and location.
 3. Listing
@@ -48,7 +48,7 @@ Field-specific constraints are applied, such as ensuring unique values where req
 Form validation with Yup ensures that data integrity is maintained on both the frontend and backend.
 
 ## Usage
-Add and Manage Video Games: Add new video games with their details.
+Add and Manage Games: Add new video games with their details.
 View and Create Stores: Create new stores and view location and hours of operation
 Create Listings: Set up listings for video games at different stores, specifying pricing, quantity, and condition. Update or remove listings as needed.
 
@@ -65,7 +65,7 @@ pipenv install
 
 pipenv shell
 
-cd server directory
+cd to the server directory
 
 python seed.py
 
@@ -75,7 +75,7 @@ python app.py
 
 open new terminal window
 
-cd client directory
+cd to the client directory
 
 npm install
 
