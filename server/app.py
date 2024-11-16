@@ -137,12 +137,10 @@ class Listings(Resource):
             
             if not game or not store:
                 return make_response({'error': 'Game or Store not found'}, 404)
-            
             # Create the new listing
             new_listing = Listing(
                 condition=json['condition'],
                 stock=json['stock'],
-                # created_at = json['created_at'],
                 price=json['price'],
                 game=game,  # Associate the game object
                 store=store  # Associate the store object
@@ -171,7 +169,6 @@ class ListingsById(Resource):
             if store:
                 listing.store = store
             
-            # Update other fields
             listing.condition = json['condition']
             listing.stock = json['stock']
             listing.price = json['price']

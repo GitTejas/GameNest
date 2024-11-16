@@ -99,7 +99,6 @@ class Store(db.Model, SerializerMixin):
     def validates_location(self, key, location):
         if not isinstance(location, str) or not location.strip():
             raise ValueError("Location must be a non-empty string.")        
-        # Check for at least one letter and one number
         has_letter = any(char.isalpha() for char in location)
         has_number = any(char.isdigit() for char in location)
         if has_letter and has_number:
@@ -115,11 +114,9 @@ class Store(db.Model, SerializerMixin):
         try:
             # Split the hours string by "-"
             start_time, end_time = hours.split("-")
-
             # Extract the hour part (before the ":")
             start_hour = int(start_time.split(":")[0])
             end_hour = int(end_time.split(":")[0])
-
             # Check if both start and end hours are valid
             if not (0 <= start_hour <= 23 and 0 <= end_hour <= 23):
                 raise ValueError('Hours must be between 0 and 23.')
