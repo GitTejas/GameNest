@@ -228,6 +228,7 @@ api.add_resource(Stores, "/stores")
 api.add_resource(StoresById, "/stores/<int:id>")
 api.add_resource(Listings, "/listings")
 api.add_resource(ListingsById, '/listings/<int:id>')
+
 api.add_resource(GamesByConsole, "/games/console/<string:console>")
 api.add_resource(GamesByRating, "/games/rating/<string:rating>")
 api.add_resource(GamesByGenre, "/games/genre/<string:genre>")
