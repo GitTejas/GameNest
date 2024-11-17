@@ -6,18 +6,17 @@ function Listings() {
   const [listings, setListings] = useState([]);
   const [editingListing, setEditingListing] = useState(null);
   const [sortCriterion, setSortCriterion] = useState('');
-  const [priceFilter, setPriceFilter] = useState('all'); // New state for price filter
-  const [games, setGames] = useState([]); // State for games
-  const [stores, setStores] = useState([]); // State for stores
+  const [priceFilter, setPriceFilter] = useState('all');
+  const [games, setGames] = useState([]); 
+  const [stores, setStores] = useState([]);
 
-  // Fetch listings, games, and stores on component mount
+  // Fetch listings, games, and stores
   useEffect(() => {
     fetch('/listings')
       .then((response) => response.json())
       .then((data) => setListings(data))
       .catch((error) => console.error('Error fetching listings:', error));
 
-    // Fetch games and stores
     Promise.all([
       fetch('/games').then((res) => res.json()),
       fetch('/stores').then((res) => res.json()),
